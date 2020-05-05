@@ -1,9 +1,11 @@
 import { Response, Request } from 'express';
+import { User } from 'user';
 import db from '../models/db';
-import { User } from '../global';
 
 export function setUser(user: any) {
+  /* eslint-disable no-console */
   console.log(user);
+  /* eslint-enable no-console */
 }
 
 export async function getUser(req: Request, res: Response) {
