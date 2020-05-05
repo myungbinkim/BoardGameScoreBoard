@@ -1,8 +1,8 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
+import React, { useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 const EmptyGrid = () => <Col className="empty-grid" />;
 
@@ -12,7 +12,13 @@ const PlayerButton = (props) => {
   const handleClick = (e) => {
     setScore(score + e.target.value);
   };
-  return <Button variant="primary" onClick={(e) => handleClick(e)}> {name} </Button>;
+  return (
+    <Button variant="primary" onClick={(e) => handleClick(e)}>
+      {' '}
+      {name}
+      {' '}
+    </Button>
+  );
 };
 
 const TeamGrid = (props) => {
@@ -20,15 +26,15 @@ const TeamGrid = (props) => {
   return (
     <Col className="grid">
       <Container fluid>
-        <Row style={{ height: "100px" }}>
-          <Col style={{ marginTop: "30px" }}>
+        <Row style={{ height: '100px' }}>
+          <Col style={{ marginTop: '30px' }}>
             <PlayerButton name={player1} />
           </Col>
-          <Col style={{ marginTop: "30px" }}>
+          <Col style={{ marginTop: '30px' }}>
             <PlayerButton name={player2} />
           </Col>
         </Row>
-        <p style={{ textAlign: "center", color: "darkgrey" }}> 현재점수: 68 </p>
+        <p style={{ textAlign: 'center', color: 'darkgrey' }}> 현재점수: 68 </p>
       </Container>
     </Col>
   );

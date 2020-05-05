@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 
 import Home from './screens/Home';
 import TeamMatching from './screens/TeamMatching';
+import ScoreBoard from './screens/ScoreBoard';
 import Rank from './screens/Rank';
 
 import Header from './components/Header';
@@ -21,6 +22,9 @@ export default function App() {
           </Route>
           <Route path="/tm">
             <TeamMatching />
+          </Route>
+          <Route path="/scb">
+            <ScoreBoard />
           </Route>
           <Route path="/rank">
             <Rank />
