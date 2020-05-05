@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 
 import Home from './screens/Home';
+import TeamMatching from './screens/TeamMatching';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -16,6 +17,9 @@ export default function App() {
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/tm">
+            <TeamMatching />
           </Route>
         </Switch>
       </Container>
