@@ -14,7 +14,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Header />
-      <Container sytle={{ width: '100vw', marginTop: '80px', marginBottom: '120px' }}>
+      <Container style={{ width: '100vw', marginTop: '60px', marginBottom: '90px' }}>
         <Switch>
           <Route exact path="/">
             <Home />

@@ -36,7 +36,7 @@ const Rank = () => {
         <tbody>
           {rank.map((row, index) => (
             <tr key={row.team}>
-              <td>{index}</td>
+              <td>{index + 1}</td>
               <td>{row.team.join(', ')}</td>
               <td>{row.score}</td>
             </tr>
