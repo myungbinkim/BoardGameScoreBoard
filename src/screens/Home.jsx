@@ -5,11 +5,12 @@ import Button from 'react-bootstrap/Button';
 export default function Home() {
   return (
     <Card border="secondary" className="mt-3">
-      <Card.Img variant="top" src="../../public/nimmt.jpeg" style={{ opacity: 0.3 }} />
-      <Card.ImgOverlay className="text-center align-items-center">
-        <Button size="lg" variant="success" block>START</Button>
-        <Button size="lg" variant="primary" block>RANK</Button>
-      </Card.ImgOverlay>
+      <Card.Body>
+        <Card.Title>6nimmt</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">Team Matching</Card.Subtitle>
+        <Button variant="success">START</Button>
+        <Button variant="primary">RANK</Button>
+      </Card.Body>
     </Card>
   );
 }
