@@ -1,5 +1,5 @@
 import {
-  SET_MAX_SCORE, SET_TEAM_SIZE, ADD_PLAYER, SET_TEAM, SET_SCORE,
+  SET_MAX_SCORE, SET_TEAM_SIZE, ADD_PLAYER, SET_TEAM, SET_SCORE, SET_SELECTED, RESET_SELECTED
 } from './actions';
 
 // 일단 scoreboard 테스트 하려고 다 넣어놓음
@@ -7,17 +7,38 @@ const initialState = {
   playerCount: 10,
   playersPerTeam: 2,
   maxScore: 77,
+  allPlayersSelected: false,
   playerList: [
-    { name: '장성우', team: 0, score: 0 },
-    { name: '박상현', team: 0, score: 0 },
-    { name: '김명빈', team: 1, score: 0 },
-    { name: '남주현', team: 1, score: 0 },
-    { name: '안종찬', team: 2, score: 0 },
-    { name: '양희정', team: 2, score: 0 },
-    { name: '김태윤', team: 3, score: 0 },
-    { name: '이주호', team: 3, score: 0 },
-    { name: '김우진', team: 4, score: 0 },
-    { name: '김숭', team: 4, score: 0 },
+    {
+      name: '장성우', team: 0, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '박상현', team: 0, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '김명빈', team: 1, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '남주현', team: 1, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '안종찬', team: 2, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '양희정', team: 2, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '김태윤', team: 3, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '이주호', team: 3, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '김우진', team: 4, prevScore: 0, score: 0, selected: false,
+    },
+    {
+      name: '김숭', team: 4, prevScore: 0, score: 0, selected: false,
+    },
   ],
 };
 
@@ -66,7 +87,7 @@ const reducer = (state = initialState, action) => {
       const { name, score } = action.payload;
       const playerList = state.playerList.map((player) => {
         if (player.name === name) {
-          const newScore = player.score + score;
+          const newScore = player.prevScore + score;
           return { ...player, score: newScore };
         }
         return player;
@@ -74,6 +95,37 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
+        playerList,
+      };
+    }
+    case SET_SELECTED: {
+      const { name } = action.payload;
+      const playerList = state.playerList.map((player) => {
+        if (player.name === name) {
+          return { ...player, selected: true };
+        }
+        return player;
+      });
+      let allPlayersSelected = true;
+      playerList.forEach((player) => {
+        allPlayersSelected = allPlayersSelected && player.selected;
+      });
+      return {
+        ...state,
+        allPlayersSelected,
+        playerList,
+      };
+    }
+    case RESET_SELECTED: {
+      if (!state.allPlayersSelected) {
+        window.console.log('Reset Selected was called when all players are not selected.');
+      }
+      const allPlayersSelected = false;
+      const playerList = state.playerList.map((player) => (
+        { ...player, selected: false, prevScore: player.score }));
+      return {
+        ...state,
+        allPlayersSelected,
         playerList,
       };
     }

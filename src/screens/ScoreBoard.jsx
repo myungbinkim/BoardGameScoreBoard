@@ -14,16 +14,16 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Button from 'react-bootstrap/Button';
 
 /* redux */
-import { setScore } from '../redux/actions';
+import { setSelected, resetSelected, setScore } from '../redux/actions';
 
 const renderPlayerButton = (player) => {
   const dispatch = useDispatch();
-  const [variant, setVariant] = useState('warning');
+  const variant = player.selected ? 'success' : 'secondary';
   const handleSelect = (eventKey) => {
     const value = parseInt(eventKey, 10);
     dispatch(setScore(player.name, value));
-    if (variant !== 'success') {
-      setVariant('success');
+    if (!player.selected) {
+      dispatch(setSelected(player.name));
     }
   };
 
@@ -74,7 +74,7 @@ const renderTeam = (team) => {
   });
   return (
     <Container className="border" key={team.id} fluid>
-      <Row>
+      <Row style={{ height: 50 }}>
         {players.map((player) => renderPlayerButton(player))}
       </Row>
       <ScoreBar currentScore={currentScore} />
@@ -133,13 +133,19 @@ const TeamGrid = () => {
 
 const NextRoundButton = (props) => {
   const { round, setRound } = props;
+  const dispatch = useDispatch();
   const nextRound = round + 1;
+  const disable = !useSelector((state) => state.allPlayersSelected);
 
   return (
     <Button
       variant="info"
       size="lg"
-      onClick={() => setRound(nextRound)}
+      onClick={() => {
+        dispatch(resetSelected());
+        setRound(nextRound);
+      }}
+      disabled={disable}
       block
     >
       Next Round
