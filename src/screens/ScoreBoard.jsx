@@ -54,8 +54,10 @@ const ScoreBar = (props) => {
     progress = 'success';
   } else if (percentage > 50 && percentage <= 75) {
     progress = 'warning';
-  } else {
+  } else if (percentage > 75 && percentage <= 99) {
     progress = 'danger';
+  } else {
+    progress = 'dark';
   }
   return (
     <ProgressBar animated variant={progress} now={now} label={`${currentScore}`} block="true" />
