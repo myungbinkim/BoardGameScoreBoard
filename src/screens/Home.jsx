@@ -1,5 +1,4 @@
 import React from 'react';
-import Jumbotron from 'react-bootstrap/Jumbotron';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Card from 'react-bootstrap/Card';

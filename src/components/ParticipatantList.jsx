@@ -16,6 +16,9 @@ import Absentee from './Absentee';
 
 
 const PartList = ({ partInfo, selectPart }) => {
+  let a = 1;
+  const b = a;
+  a = b;
   return (
     <div>
       <Jumbotron fluid>
@@ -49,9 +52,10 @@ const PartList = ({ partInfo, selectPart }) => {
     </div>
   );
 };
+
 PartList.propTypes = {
-  partInfo: PropTypes.any,
-  selectPart: PropTypes.any,
+  partInfo: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  selectPart: PropTypes.func.isRequired,
 };
 
 const ParticipatantList = ({ partInfo, selectPart }) => {
@@ -121,8 +125,8 @@ const ParticipatantList = ({ partInfo, selectPart }) => {
   );
 };
 ParticipatantList.propTypes = {
-  partInfo: PropTypes.any,
-  selectPart: PropTypes.any,
+  partInfo: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  selectPart: PropTypes.func.isRequired,
 };
 
 export default ParticipatantList;

@@ -65,9 +65,8 @@ function ParticipatantInfo(state = initialState, action) {
     case SELECT_PART:
       return {
         ...state,
-        partInfo: state.partInfo.map((part) =>
-          part.id === action.id ? { ...part, selected: !part.selected } : part
-        ),
+        partInfo: state.partInfo.map((part) => (
+          part.id === action.id ? { ...part, selected: !part.selected } : part)),
       };
     default:
       return state;
