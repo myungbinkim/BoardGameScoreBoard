@@ -11,7 +11,8 @@
     "build:prod": "webpack --mode production",
     "serve": "cd server && yarn install && yarn run build && yarn run serve",
     "watch": "nodemon --exec \"yarn run build\" --ext js,jsx --watch src",
-    "start": "concurrently \"yarn run serve\" \"yarn run watch\" "
+    "start": "concurrently \"yarn run serve\" \"yarn run watch\" ",
+    "lint": "eslint src --ext .js,.jsx"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
