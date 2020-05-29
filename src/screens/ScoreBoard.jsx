@@ -14,40 +14,41 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Button from 'react-bootstrap/Button';
 
 /* redux */
-import { setSelected, resetSelected, setScore } from '../redux/actions';
+import { setSelected, resetSelected, setScore } from '../redux/scores';
+
+/* for dropdown */
+import './ScoreBoard.css';
 
 const renderPlayerButton = (player) => {
   const dispatch = useDispatch();
-  const variant = player.selected ? 'success' : 'secondary';
+  const variant = player.scoreInfo.selected ? 'success' : 'secondary';
   const handleSelect = (eventKey) => {
     const value = parseInt(eventKey, 10);
-    dispatch(setScore(player.name, value));
-    if (!player.selected) {
-      dispatch(setSelected(player.name));
+    dispatch(setScore(player.playerInfo.id, value));
+    if (!player.scoreInfo.selected) {
+      dispatch(setSelected(player.playerInfo.id));
     }
   };
+  const scoreArray = Array.from(new Array(100), (x, i) => i + 1);
 
   return (
     <DropdownButton
+      id="dropdown-menu"
       variant={variant}
-      key={player.name}
-      title={player.name}
+      key={player.playerInfo.name}
+      title={player.playerInfo.name}
       onSelect={(eventKey) => handleSelect(eventKey)}
     >
-      <Dropdown.Item as="button" eventKey="10">10</Dropdown.Item>
-      <Dropdown.Item as="button" eventKey="20">20</Dropdown.Item>
-      <Dropdown.Item as="button" eventKey="30">30</Dropdown.Item>
-      <Dropdown.Item as="button" eventKey="40">40</Dropdown.Item>
+      {scoreArray.map((i) => (<Dropdown.Item as="button" eventKey={i} key={i}>{i}</Dropdown.Item>))}
     </DropdownButton>
   );
 };
 
 const ScoreBar = (props) => {
-  const { currentScore } = props;
-  const maxScore = useSelector((state) => state.maxScore);
-  const percentage = parseInt((currentScore / maxScore) * 100, 10);
+  const { totalScore } = props;
+  const maxScore = useSelector((state) => state.game.maxScore);
+  const percentage = parseInt((totalScore / maxScore) * 100, 10);
   const now = percentage <= 100 ? percentage : 100;
-
   let progress = '';
 
   if (percentage >= 0 && percentage <= 50) {
@@ -60,32 +61,29 @@ const ScoreBar = (props) => {
     progress = 'dark';
   }
   return (
-    <ProgressBar animated variant={progress} now={now} label={`${currentScore}`} block="true" />
+    <ProgressBar animated variant={progress} now={now} label={`${totalScore}`} block="true" />
   );
 };
 
 ScoreBar.propTypes = {
-  currentScore: PropTypes.number.isRequired,
+  totalScore: PropTypes.number.isRequired,
 };
 
 const renderTeam = (team) => {
-  let currentScore = 0;
-  const { players } = team;
-  players.forEach((player) => {
-    currentScore += parseInt(player.score, 10);
-  });
+  const { id, players, totalScore } = team;
+
   return (
-    <Container className="border" key={team.id} fluid>
+    <Container className="border" key={id} fluid>
       <Row style={{ height: 50 }}>
         {players.map((player) => renderPlayerButton(player))}
       </Row>
-      <ScoreBar currentScore={currentScore} />
+      <ScoreBar totalScore={totalScore} />
     </Container>
   );
 };
 
 const Header = (props) => {
-  const maxScore = useSelector((state) => state.maxScore);
+  const maxScore = useSelector((state) => state.game.maxScore);
   const { round } = props;
   return (
     <Container>
@@ -112,18 +110,25 @@ Header.propTypes = {
 
 const TeamGrid = () => {
   /* redux */
-  const playerList = useSelector((state) => state.playerList);
-  const playerCount = useSelector((state) => state.playerCount);
-  const playersPerTeam = useSelector((state) => state.playersPerTeam);
+  const playerList = useSelector((state) => state.players.playerList);
+  const playerCount = useSelector((state) => state.players.playerCount);
+  const playersPerTeam = useSelector((state) => state.game.playersPerTeam);
+  const scoreArray = useSelector((state) => state.scores.scoreArray);
 
   /* for team */
   const teamCount = playerCount / playersPerTeam;
   const teamArray = new Array(teamCount);
   for (let i = 0; i < teamCount; i += 1) {
-    teamArray[i] = { id: i, players: [] };
+    teamArray[i] = { id: i, players: [], totalScore: 0 };
   }
   playerList.forEach((player) => {
-    teamArray[player.team].players.push(player);
+    scoreArray.forEach((entry) => {
+      const teamId = parseInt(player.team, 10);
+      if (entry.id === player.id) {
+        teamArray[teamId].players.push({ playerInfo: player, scoreInfo: entry });
+        teamArray[teamId].totalScore += entry.score;
+      }
+    });
   });
 
   return (
@@ -137,7 +142,7 @@ const NextRoundButton = (props) => {
   const { round, setRound } = props;
   const dispatch = useDispatch();
   const nextRound = round + 1;
-  const disable = !useSelector((state) => state.allPlayersSelected);
+  const disable = !useSelector((state) => state.scores.allPlayersSelected);
 
   return (
     <Button
