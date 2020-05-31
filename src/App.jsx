@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 
 import Home from './screens/Home';
+import Participatant from './screens/Participatant';
 import TeamMatching from './screens/TeamMatching';
 import ScoreBoard from './screens/ScoreBoard';
 import Rank from './screens/Rank';
@@ -20,10 +21,13 @@ export default function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/tm">
+          <Route path="/participatant">
+            <Participatant />
+          </Route>
+          <Route path="/team-matching">
             <TeamMatching />
           </Route>
-          <Route path="/scb">
+          <Route path="/score-board">
             <ScoreBoard />
           </Route>
           <Route path="/rank">
