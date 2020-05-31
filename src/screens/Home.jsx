@@ -15,7 +15,9 @@ export default function Home() {
           <Link to="/participatant">
             <Button variant="success">START</Button>
           </Link>
-          <Button variant="primary">RANK</Button>
+          <Link to="/rank">
+            <Button variant="primary">RANK</Button>
+          </Link>
         </Card.Body>
       </Card>
     </>
