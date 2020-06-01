@@ -16,7 +16,7 @@ import Participatant from './Participatant';
 import Absentee from './Absentee';
 
 
-const PartList = ({ partInfo, selectPart }) => {
+const PartList = ({ partInfo, selectPart, setPart }) => {
   let a = 1;
   const b = a;
   a = b;
@@ -29,8 +29,9 @@ const PartList = ({ partInfo, selectPart }) => {
           </Col>
           <Col>
             <Link to="/team-matching">
-              <Button variant="success">NEXT</Button>
+              <Button variant="success" onClick={() => setPart()}>NEXT</Button>
             </Link>
+            <Button variant="success" onClick={() => setPart()}>NEXT</Button>
           </Col>
         </Row>
         <Container>
@@ -66,9 +67,10 @@ const PartList = ({ partInfo, selectPart }) => {
 PartList.propTypes = {
   partInfo: PropTypes.arrayOf(PropTypes.shape).isRequired,
   selectPart: PropTypes.func.isRequired,
+  setPart: PropTypes.func.isRequired,
 };
 
-const ParticipatantList = ({ partInfo, selectPart }) => {
+const ParticipatantList = ({ partInfo, selectPart, setPart }) => {
   const [clicked, setClicked] = useState(false);
   return (
     <>
@@ -129,7 +131,7 @@ const ParticipatantList = ({ partInfo, selectPart }) => {
         </Navbar.Collapse>
       </Navbar>
       <div>
-        {clicked && <PartList partInfo={partInfo} selectPart={selectPart} />}
+        {clicked && <PartList partInfo={partInfo} selectPart={selectPart} setPart={setPart} />}
       </div>
     </>
   );
@@ -137,6 +139,7 @@ const ParticipatantList = ({ partInfo, selectPart }) => {
 ParticipatantList.propTypes = {
   partInfo: PropTypes.arrayOf(PropTypes.shape).isRequired,
   selectPart: PropTypes.func.isRequired,
+  setPart: PropTypes.func.isRequired,
 };
 
 export default ParticipatantList;
