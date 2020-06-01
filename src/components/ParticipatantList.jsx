@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Jumbotron from 'react-bootstrap/Jumbotron';
+import { Link } from 'react-router-dom';
 import Participatant from './Participatant';
 import Absentee from './Absentee';
 
@@ -22,7 +23,16 @@ const PartList = ({ partInfo, selectPart }) => {
   return (
     <div>
       <Jumbotron fluid>
-        <h1>참가자</h1>
+        <Row>
+          <Col>
+            <h1>참가자</h1>
+          </Col>
+          <Col>
+            <Link to="/team-matching">
+              <Button variant="success">NEXT</Button>
+            </Link>
+          </Col>
+        </Row>
         <Container>
           <Row>
             {partInfo.map((part) => (
