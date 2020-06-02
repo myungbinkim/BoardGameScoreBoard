@@ -1,17 +1,23 @@
-import React from 'react';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
+import { setTeam } from '../redux/players';
 
 const ArrayShuffle = (arr) => {
+  const resultArr = arr.slice();
   let j;
   let x;
   let i;
-  for (i = arr.length; i; i -= 1) {
+  for (i = resultArr.length; i; i -= 1) {
     j = Math.floor(Math.random() * i);
-    x = arr[i - 1];
-    arr[i - 1] = arr[j];
-    arr[j] = x;
+    x = resultArr[i - 1];
+    resultArr[i - 1] = resultArr[j];
+    resultArr[j] = x;
   }
+  return resultArr;
 };
 
 const FindNumberOfMembers = (arrsize) => {
@@ -27,45 +33,48 @@ const FindNumberOfMembers = (arrsize) => {
 
 function TeamTable(props) {
   const { data } = props;
-  const sortoptions = {
-    defaultSortName: 'rank',
-    defaultSortOrder: 'asc',
-  };
 
   return (
-    <div>
-      <BootstrapTable data={data} options={sortoptions} striped>
-        <TableHeaderColumn dataField="rank" isKey dataSort dataAlign="center" width="50">예상 순위</TableHeaderColumn>
-        <TableHeaderColumn dataField="member" dataAlign="center" width="150">팀원</TableHeaderColumn>
-      </BootstrapTable>
-    </div>
+    <BootstrapTable data={data} striped>
+      <TableHeaderColumn dataField="id" isKey dataSort dataAlign="center" width="50">팀</TableHeaderColumn>
+      <TableHeaderColumn dataField="member" dataAlign="center" width="150">팀원</TableHeaderColumn>
+    </BootstrapTable>
   );
 }
 
 TeamTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
-    rank: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired,
     member: PropTypes.arrayOf(PropTypes.string).isRequired,
   })).isRequired,
 };
 
 export default function TeamMatching() {
-  // players는 인자로 받아야 함
-  const players = ['희정', '명빈', '종찬', '주현', '우진', '주호', '상현', '성우', '숭', '태윤'];
-  ArrayShuffle(players);
+  const players = useSelector((state) => state.players.playerlist);
   const NumberOfMembers = FindNumberOfMembers(players.length);
+  const shuffle = ArrayShuffle(players);
+  const dispatch = useDispatch();
+
   const Team = [];
-  for (let i = 0; i < players.length; i += NumberOfMembers) {
+  for (let i = 0, j = 1; i < shuffle.length; i += NumberOfMembers, j += 1) {
     Team.push({
-      rank: 1,
-      member: players.slice(i, i + NumberOfMembers),
-      score: 77 + i,
+      id: j,
+      member: shuffle.slice(i, i + NumberOfMembers),
     });
   }
-  Team.sort((a, b) => a.score - b.score);
-  Team.forEach((element, index) => { element.rank = index; });
+
+  useEffect(() => {
+    return () => {
+      dispatch(setTeam(Team));
+    };
+  });
 
   return (
-    <TeamTable data={Team} />
+    <div>
+      <TeamTable data={Team} />
+      <Link to="/score-board">
+        <Button variant="success">GAME START</Button>
+      </Link>
+    </div>
   );
 }
