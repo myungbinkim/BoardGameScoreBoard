@@ -1,1 +1,18 @@
 {"players": [{"id": 0, "name": "남주현"}, {"id": 1, "name": "김숭"}]}
+
+{
+    "url" : "/api/rank?team={single}&last_days={30}",
+    "_comment" : "모든 team (single, duo, trio) 조합의 최근 N일간의 기록 (점수, 승/패)",
+    "res" : [
+        {"team" : ["주현"], "score" : 67, "ranking" : 1},
+        {"team" : ["숭"], "score" : 32, "ranking" : 2},
+        {"team" : ["성우"], "score" : 15, "ranking" : 3},
+        {"team" : ["상현"], "score" : 11, "ranking" : 4},
+        {"team" : ["명빈"], "score" : 2, "ranking" : 5},
+        {"team" : ["주현"], "score" : 32, "ranking" : 1},
+        {"team" : ["상현"], "score" : 22, "ranking" : 2},
+        {"team" : ["명빈"], "score" : 15, "ranking" : 3},
+        {"team" : ["성우"], "score" : 10, "ranking" : 4},
+        {"team" : ["숭"], "score" : 0, "ranking" : 5},
+    ]
+}
