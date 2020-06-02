@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import BootstrapTable from 'react-bootstrap-table-next';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import { setTeam } from '../redux/players';
@@ -33,12 +34,20 @@ const FindNumberOfMembers = (arrsize) => {
 
 function TeamTable(props) {
   const { data } = props;
+  const columns = [{
+    dataField: 'id',
+    text: '팀',
+    headerAlign: 'center',
+    align: 'center',
+  }, {
+    dataField: 'member',
+    text: '팀원',
+    headerAlign: 'center',
+    align: 'center',
+  }];
 
   return (
-    <BootstrapTable data={data} striped>
-      <TableHeaderColumn dataField="id" isKey dataSort dataAlign="center" width="50">팀</TableHeaderColumn>
-      <TableHeaderColumn dataField="member" dataAlign="center" width="150">팀원</TableHeaderColumn>
-    </BootstrapTable>
+    <BootstrapTable keyField="id" data={data} columns={columns} headerAlign="center" bordered striped />
   );
 }
 
