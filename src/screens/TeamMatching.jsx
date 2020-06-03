@@ -1,35 +1,26 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import { setTeam } from '../redux/players';
 
 const ArrayShuffle = (arr) => {
-  const resultArr = arr.slice();
-  let j;
-  let x;
-  let i;
-  for (i = resultArr.length; i; i -= 1) {
-    j = Math.floor(Math.random() * i);
-    x = resultArr[i - 1];
-    resultArr[i - 1] = resultArr[j];
-    resultArr[j] = x;
+  const result = arr.slice();
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
   }
-  return resultArr;
+  return result;
 };
 
 const FindNumberOfMembers = (arrsize) => {
-  let num;
-  for (num = 2; num <= arrsize; num += 1) {
-    if (arrsize % num === 0) break;
+  for (let num = 2; num < arrsize; num += 1) {
+    if (arrsize % num === 0) return num;
   }
-
-  if (num === arrsize) num = 1;
-
-  return num;
+  return 1;
 };
 
 function TeamTable(props) {
@@ -40,21 +31,31 @@ function TeamTable(props) {
     headerAlign: 'center',
     align: 'center',
   }, {
-    dataField: 'member',
+    dataField: 'players',
     text: '팀원',
     headerAlign: 'center',
     align: 'center',
   }];
+  const showData = data.map((elem) => {
+    const obj = { id: elem.id + 1, players: '' };
+    for (let i = 0; i < elem.members.length; i += 1) {
+      obj.players = `${obj.players + elem.members[i].name} `;
+    }
+    return obj;
+  });
 
   return (
-    <BootstrapTable keyField="id" data={data} columns={columns} headerAlign="center" bordered striped />
+    <BootstrapTable keyField="id" data={showData} columns={columns} headerAlign="center" bordered striped />
   );
 }
 
 TeamTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
-    member: PropTypes.arrayOf(PropTypes.string).isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })).isRequired,
   })).isRequired,
 };
 
@@ -65,18 +66,14 @@ export default function TeamMatching() {
   const dispatch = useDispatch();
 
   const Team = [];
-  for (let i = 0, j = 1; i < shuffle.length; i += NumberOfMembers, j += 1) {
-    Team.push({
-      id: j,
-      member: shuffle.slice(i, i + NumberOfMembers),
-    });
+  for (let i = 0, j = 0; j < shuffle.length; j += NumberOfMembers, i += 1) {
+    Team[i] = {
+      id: i,
+      members: shuffle.slice(j, j + NumberOfMembers),
+    };
   }
 
-  useEffect(() => {
-    return () => {
-      dispatch(setTeam(Team));
-    };
-  });
+  useEffect(() => () => { dispatch(setTeam(Team)); });
 
   return (
     <div>
