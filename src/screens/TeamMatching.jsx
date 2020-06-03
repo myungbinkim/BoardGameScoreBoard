@@ -37,10 +37,8 @@ function TeamTable(props) {
     align: 'center',
   }];
   const showData = data.map((elem) => {
-    const obj = { id: elem.id + 1, players: '' };
-    for (let i = 0; i < elem.members.length; i += 1) {
-      obj.players = `${obj.players + elem.members[i].name} `;
-    }
+    const obj = { id: elem.id + 1 };
+    obj.players = elem.members.reduce((s, e) => `${s + e.name} `, '');
     return obj;
   });
 
