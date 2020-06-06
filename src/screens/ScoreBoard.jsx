@@ -14,40 +14,52 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Button from 'react-bootstrap/Button';
 
 /* redux */
-import { setSelected, resetSelected, setScore } from '../redux/scores';
+import { setSelected, resetSelected, setScore } from '../redux/players';
 
-/* for dropdown */
-import './ScoreBoard.css';
+const isPlayerSelected = (id, selectedList) => (
+  selectedList.find((x) => (x.id === id)).selected
+);
 
-const renderPlayerButton = (player) => {
+const renderPlayerButton = (player, selectedList) => {
   const dispatch = useDispatch();
-  const variant = player.scoreInfo.selected ? 'success' : 'secondary';
+  const selected = isPlayerSelected(player.id, selectedList);
+  const variant = selected ? 'success' : 'secondary';
+
   const handleSelect = (eventKey) => {
-    const value = parseInt(eventKey, 10);
-    dispatch(setScore(player.playerInfo.id, value));
-    if (!player.scoreInfo.selected) {
-      dispatch(setSelected(player.playerInfo.id));
+    const value = Number(eventKey);
+    dispatch(setScore(player.id, value));
+    if (!selected) {
+      dispatch(setSelected(player.id));
     }
   };
   const scoreArray = Array.from(new Array(100), (x, i) => i + 1);
 
+  window.console.log(`key: ${player.name}`);
   return (
     <DropdownButton
-      id="dropdown-menu"
+      style={{
+        height: '200px',
+        maxHeight: '200px',
+        overflowY: 'scroll',
+      }}
       variant={variant}
-      key={player.playerInfo.name}
-      title={player.playerInfo.name}
+      key={player.name}
+      title={player.name}
       onSelect={(eventKey) => handleSelect(eventKey)}
     >
-      {scoreArray.map((i) => (<Dropdown.Item as="button" eventKey={i} key={i}>{i}</Dropdown.Item>))}
+      {scoreArray.map(
+        (i) => (
+          <Dropdown.Item as="button" eventKey={i} key={`${player.name}-${i}`}>
+            {i}
+          </Dropdown.Item>
+        ))}
     </DropdownButton>
   );
 };
 
 const ScoreBar = (props) => {
-  const { totalScore } = props;
-  const maxScore = useSelector((state) => state.game.maxScore);
-  const percentage = parseInt((totalScore / maxScore) * 100, 10);
+  const { totalScore, maxScore } = props;
+  const percentage = Number((totalScore / maxScore) * 100);
   const now = percentage <= 100 ? percentage : 100;
   let progress = '';
 
@@ -67,24 +79,47 @@ const ScoreBar = (props) => {
 
 ScoreBar.propTypes = {
   totalScore: PropTypes.number.isRequired,
+  maxScore: PropTypes.number.isRequired,
 };
 
-const renderTeam = (team) => {
-  const { id, players, totalScore } = team;
+const Team = (props) => {
+  const {
+    team,
+    totalScore,
+    maxScore,
+    selectedList,
+  } = props;
+  const { id, members } = team;
+  const key = `team-${id}`;
 
+  window.console.log(`key: ${key}`);
   return (
-    <Container className="border" key={id} fluid>
-      <Row style={{ height: 50 }}>
-        {players.map((player) => renderPlayerButton(player))}
+    <Container className="border" key={key} fluid>
+      <Row style={{ height: 50 }} key={key}>
+        {members.map((member) => renderPlayerButton(member, selectedList))}
       </Row>
-      <ScoreBar totalScore={totalScore} />
+      <ScoreBar totalScore={totalScore} maxScore={maxScore} />
     </Container>
   );
 };
+Team.propTypes = {
+  team: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })).isRequired,
+  }).isRequired,
+  totalScore: PropTypes.number.isRequired,
+  maxScore: PropTypes.number.isRequired,
+  selectedList: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    selected: PropTypes.bool.isRequired,
+  })).isRequired,
+};
 
 const Header = (props) => {
-  const maxScore = useSelector((state) => state.game.maxScore);
-  const { round } = props;
+  const { round, maxScore } = props;
   return (
     <Container>
       <Row>
@@ -106,43 +141,67 @@ const Header = (props) => {
 };
 Header.propTypes = {
   round: PropTypes.number.isRequired,
+  maxScore: PropTypes.number.isRequired,
 };
 
-const TeamGrid = () => {
-  /* redux */
-  const playerList = useSelector((state) => state.players.playerList);
-  const playerCount = useSelector((state) => state.players.playerCount);
-  const playersPerTeam = useSelector((state) => state.game.playersPerTeam);
-  const scoreArray = useSelector((state) => state.scores.scoreArray);
+const TeamGrid = (props) => {
+  const {
+    maxScore,
+    teams,
+    scores,
+    selectedList,
+  } = props;
 
-  /* for team */
-  const teamCount = playerCount / playersPerTeam;
-  const teamArray = new Array(teamCount);
-  for (let i = 0; i < teamCount; i += 1) {
-    teamArray[i] = { id: i, players: [], totalScore: 0 };
-  }
-  playerList.forEach((player) => {
-    scoreArray.forEach((entry) => {
-      const teamId = parseInt(player.team, 10);
-      if (entry.id === player.id) {
-        teamArray[teamId].players.push({ playerInfo: player, scoreInfo: entry });
-        teamArray[teamId].totalScore += entry.score;
-      }
+  const renderTeam = (team) => {
+    let totalScore = 0;
+    const { members } = team;
+    members.forEach((member) => {
+      scores.forEach((entry) => {
+        if (entry.id === member.id) {
+          totalScore += entry.score;
+        }
+      });
     });
-  });
+    return (
+      <Team
+        team={team}
+        totalScore={totalScore}
+        maxScore={maxScore}
+        selectedList={selectedList}
+      />
+    );
+  };
 
   return (
     <Container key="team-grid">
-      {teamArray.map((team) => renderTeam(team))}
+      {teams.map((team) => renderTeam(team))}
     </Container>
   );
 };
+TeamGrid.propTypes = {
+  maxScore: PropTypes.number.isRequired,
+  teams: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })).isRequired,
+  })).isRequired,
+  scores: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    prevScore: PropTypes.number.isRquired,
+    score: PropTypes.number.isRquired,
+  })).isRequired,
+  selectedList: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    selected: PropTypes.bool.isRequired,
+  })).isRequired,
+};
 
 const NextRoundButton = (props) => {
-  const { round, setRound } = props;
+  const { round, setRound, allSelected } = props;
   const dispatch = useDispatch();
   const nextRound = round + 1;
-  const disable = !useSelector((state) => state.scores.allPlayersSelected);
 
   return (
     <Button
@@ -152,7 +211,7 @@ const NextRoundButton = (props) => {
         dispatch(resetSelected());
         setRound(nextRound);
       }}
-      disabled={disable}
+      disabled={!allSelected}
       block
     >
       Next Round
@@ -163,19 +222,28 @@ const NextRoundButton = (props) => {
 NextRoundButton.propTypes = {
   round: PropTypes.number.isRequired,
   setRound: PropTypes.func.isRequired,
+  allSelected: PropTypes.bool.isRequired,
 };
 
 const ScoreBoard = () => {
-  /* state and ref */
+  /* state */
   const [round, setRound] = useState(1);
+
+  /* redux */
+  const maxScore = useSelector((state) => state.game.maxScore);
+  const teams = useSelector((state) => state.players.teamList);
+  const scores = useSelector((state) => state.players.scoreList);
+  const selectedList = useSelector((state) => state.players.selectedList);
+  const allSelected = useSelector((state) => state.players.allPlayersSelected);
 
   return (
     <Container>
-      <Header round={round} />
-      <TeamGrid />
+      <Header round={round} maxScore={maxScore} />
+      <TeamGrid maxScore={maxScore} teams={teams} scores={scores} selectedList={selectedList} />
       <NextRoundButton
         round={round}
         setRound={setRound}
+        allSelected={allSelected}
       />
     </Container>
   );

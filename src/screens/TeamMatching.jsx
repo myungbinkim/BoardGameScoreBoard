@@ -5,7 +5,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import { setTeam } from '../redux/players';
+import { setTeams } from '../redux/players';
 
 const ArrayShuffle = (arr) => {
   const result = arr.slice();
@@ -63,19 +63,19 @@ export default function TeamMatching() {
   const shuffle = ArrayShuffle(players);
   const dispatch = useDispatch();
 
-  const Team = [];
+  const Teams = [];
   for (let i = 0, j = 0; j < shuffle.length; j += NumberOfMembers, i += 1) {
-    Team[i] = {
+    Teams[i] = {
       id: i,
       members: shuffle.slice(j, j + NumberOfMembers),
     };
   }
 
-  useEffect(() => () => { dispatch(setTeam(Team)); });
+  useEffect(() => () => { dispatch(setTeams(Teams)); });
 
   return (
     <div>
-      <TeamTable data={Team} />
+      <TeamTable data={Teams} />
       <Link to="/score-board">
         <Button variant="success">GAME START</Button>
       </Link>
