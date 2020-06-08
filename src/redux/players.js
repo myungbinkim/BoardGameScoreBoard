@@ -7,18 +7,7 @@ const RESET_SELECTED = 'RESET_SELECTED';
 const initialState = {
   /* list of players in the following format
    * { id: number, name: string } */
-  playerlist: [
-    { id: 0, name: '희정' },
-    { id: 1, name: '주현' },
-    { id: 2, name: '종찬' },
-    { id: 3, name: '상현' },
-    { id: 4, name: '성우' },
-    { id: 5, name: '명빈' },
-    { id: 6, name: '태윤' },
-    { id: 7, name: '우진' },
-    { id: 8, name: '주호' },
-    { id: 9, name: '숭' },
-  ],
+  playerlist: [],
   /* list of teams in the following format
    * { id: number, members: arrayOf(player) } */
   teamList: [],

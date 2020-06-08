@@ -1,13 +1,13 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import Toast from 'react-bootstrap/Toast';
 import PropTypes from 'prop-types';
+import { selectPart } from '../redux/participatants';
 
-const Participatant = ({ part, selectPart }) => {
-  let a = 1;
-  const b = a;
-  a = b;
+const Participatant = ({ part }) => {
+  const dispatch = useDispatch();
   return (
-    <Toast show={part.selected} onClose={() => selectPart(part.id)}>
+    <Toast show={part.selected} onClose={() => dispatch(selectPart(part.id))}>
       <Toast.Header>
         <strong className="mr-auto">{part.name}</strong>
       </Toast.Header>
@@ -22,7 +22,6 @@ Participatant.propTypes = {
     name: PropTypes.string.isRequired,
     selected: PropTypes.bool.isRequired,
   }).isRequired,
-  selectPart: PropTypes.func.isRequired,
 };
 
 export default Participatant;

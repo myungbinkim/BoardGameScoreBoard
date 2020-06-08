@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -14,12 +14,12 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import { Link } from 'react-router-dom';
 import Participatant from './Participatant';
 import Absentee from './Absentee';
+import { setPlayers } from '../redux/players';
 
 
-const PartList = ({ partInfo, selectPart, setPart }) => {
-  let a = 1;
-  const b = a;
-  a = b;
+const PartList = () => {
+  const partInfo = useSelector((state) => state.participatants.partInfo);
+  const dispatch = useDispatch();
   return (
     <div>
       <Jumbotron fluid>
@@ -29,20 +29,26 @@ const PartList = ({ partInfo, selectPart, setPart }) => {
           </Col>
           <Col>
             <Link to="/team-matching">
-              <Button variant="success" onClick={() => setPart()}>NEXT</Button>
+              <Button
+                variant="success"
+                onClick={() => dispatch(
+                  setPlayers(
+                    partInfo.filter((part) => part.selected === true).map(
+                      (part) => ({ id: part.id, name: part.name }),
+                    ),
+                  ),
+                )}
+              >
+                NEXT
+              </Button>
             </Link>
-            <Button variant="success" onClick={() => setPart()}>NEXT</Button>
           </Col>
         </Row>
         <Container>
           <Row>
             {partInfo.map((part) => (
               <Col xs={5} key={part.id}>
-                <Participatant
-                  key={part.id}
-                  part={part}
-                  selectPart={selectPart}
-                />
+                <Participatant key={part.id} part={part} />
               </Col>
             ))}
           </Row>
@@ -54,7 +60,7 @@ const PartList = ({ partInfo, selectPart, setPart }) => {
           <Row>
             {partInfo.map((part) => (
               <Col xs={5} key={part.id}>
-                <Absentee key={part.id} part={part} selectPart={selectPart} />
+                <Absentee key={part.id} part={part} />
               </Col>
             ))}
           </Row>
@@ -64,13 +70,7 @@ const PartList = ({ partInfo, selectPart, setPart }) => {
   );
 };
 
-PartList.propTypes = {
-  partInfo: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  selectPart: PropTypes.func.isRequired,
-  setPart: PropTypes.func.isRequired,
-};
-
-const ParticipatantList = ({ partInfo, selectPart, setPart }) => {
+const ParticipatantList = () => {
   const [clicked, setClicked] = useState(false);
   return (
     <>
@@ -131,15 +131,10 @@ const ParticipatantList = ({ partInfo, selectPart, setPart }) => {
         </Navbar.Collapse>
       </Navbar>
       <div>
-        {clicked && <PartList partInfo={partInfo} selectPart={selectPart} setPart={setPart} />}
+        {clicked && <PartList />}
       </div>
     </>
   );
-};
-ParticipatantList.propTypes = {
-  partInfo: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  selectPart: PropTypes.func.isRequired,
-  setPart: PropTypes.func.isRequired,
 };
 
 export default ParticipatantList;
