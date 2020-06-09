@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 /* bootstraps */
 import Container from 'react-bootstrap/Container';
@@ -46,12 +47,11 @@ const renderPlayerButton = (player, selectedList) => {
       title={player.name}
       onSelect={(eventKey) => handleSelect(eventKey)}
     >
-      {scoreArray.map(
-        (i) => (
-          <Dropdown.Item as="button" eventKey={i} key={`${player.name}-${i}`}>
-            {i}
-          </Dropdown.Item>
-        ))}
+      {scoreArray.map((i) => (
+        <Dropdown.Item as="button" eventKey={i} key={`${player.name}-${i}`}>
+          {i}
+        </Dropdown.Item>
+      ))}
     </DropdownButton>
   );
 };
@@ -84,19 +84,18 @@ ScoreBar.propTypes = {
 const Team = (props) => {
   const {
     team,
-    totalScore,
     maxScore,
     selectedList,
   } = props;
-  const { id, members } = team;
+  const { id, members, score } = team;
   const key = `team-${id}`;
 
   return (
-    <Container className="border" key={key} fluid>
+    <Container className="border" fluid>
       <Row style={{ height: 50 }} key={key}>
         {members.map((member) => renderPlayerButton(member, selectedList))}
       </Row>
-      <ScoreBar totalScore={totalScore} maxScore={maxScore} />
+      <ScoreBar totalScore={score} maxScore={maxScore} />
     </Container>
   );
 };
@@ -107,8 +106,8 @@ Team.propTypes = {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
     })).isRequired,
+    score: PropTypes.number.isRequired,
   }).isRequired,
-  totalScore: PropTypes.number.isRequired,
   maxScore: PropTypes.number.isRequired,
   selectedList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -143,52 +142,30 @@ Header.propTypes = {
 };
 
 const TeamGrid = (props) => {
-  const {
-    maxScore,
-    teams,
-    scores,
-    selectedList,
-  } = props;
-
-  const renderTeam = (team) => {
-    let totalScore = 0;
-    const { members } = team;
-    members.forEach((member) => {
-      scores.forEach((entry) => {
-        if (entry.id === member.id) {
-          totalScore += entry.score;
-        }
-      });
-    });
-    return (
-      <Team
-        team={team}
-        totalScore={totalScore}
-        maxScore={maxScore}
-        selectedList={selectedList}
-      />
-    );
-  };
-
+  const { maxScore, teamInfos, selectedList } = props;
+  const renderTeam = (team) => (
+    <Team
+      key={team.id}
+      team={team}
+      maxScore={maxScore}
+      selectedList={selectedList}
+    />
+  );
   return (
     <Container key="team-grid">
-      {teams.map((team) => renderTeam(team))}
+      {teamInfos.map((team) => renderTeam(team))}
     </Container>
   );
 };
 TeamGrid.propTypes = {
   maxScore: PropTypes.number.isRequired,
-  teams: PropTypes.arrayOf(PropTypes.shape({
+  teamInfos: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     members: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
     })).isRequired,
-  })).isRequired,
-  scores: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    prevScore: PropTypes.number.isRquired,
-    score: PropTypes.number.isRquired,
+    score: PropTypes.number.isRequired,
   })).isRequired,
   selectedList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -216,12 +193,38 @@ const NextRoundButton = (props) => {
     </Button>
   );
 };
-
 NextRoundButton.propTypes = {
   round: PropTypes.number.isRequired,
   setRound: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,
 };
+
+const GameOverButton = () => (
+  <Link to="/game-over">
+    <Button variant="danger" size="lg" block> Game Over </Button>
+  </Link>
+);
+
+const IsGameOver = (maxScore, teamInfos) => {
+  let isOver = false;
+  teamInfos.forEach((team) => { isOver = isOver || (team.score > maxScore); });
+  return isOver;
+};
+
+const getTeamInfos = (teams, scores) => (
+  teams.map((team) => {
+    let totalScore = 0;
+    const { members } = team;
+    members.forEach((member) => {
+      scores.forEach((entry) => {
+        if (entry.id === member.id) {
+          totalScore += entry.score;
+        }
+      });
+    });
+    return { ...team, score: totalScore };
+  })
+);
 
 const ScoreBoard = () => {
   /* state */
@@ -234,15 +237,15 @@ const ScoreBoard = () => {
   const selectedList = useSelector((state) => state.players.selectedList);
   const allSelected = useSelector((state) => state.players.allPlayersSelected);
 
+  const teamInfos = getTeamInfos(teams, scores);
+  const isOver = IsGameOver(maxScore, teamInfos);
+
   return (
     <Container>
       <Header round={round} maxScore={maxScore} />
-      <TeamGrid maxScore={maxScore} teams={teams} scores={scores} selectedList={selectedList} />
-      <NextRoundButton
-        round={round}
-        setRound={setRound}
-        allSelected={allSelected}
-      />
+      <TeamGrid maxScore={maxScore} teamInfos={teamInfos} selectedList={selectedList} />
+      {isOver && allSelected ? <GameOverButton />
+        : <NextRoundButton round={round} setRound={setRound} allSelected={allSelected} />}
     </Container>
   );
 };

@@ -7,6 +7,7 @@ import Participatant from './screens/Participatant';
 import TeamMatching from './screens/TeamMatching';
 import ScoreBoard from './screens/ScoreBoard';
 import Rank from './screens/Rank';
+import GameOver from './screens/GameOver';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -32,6 +33,9 @@ export default function App() {
           </Route>
           <Route path="/rank">
             <Rank />
+          </Route>
+          <Route path="/game-over">
+            <GameOver />
           </Route>
         </Switch>
       </Container>

@@ -24,15 +24,12 @@
         "Content-Type": "application/json;charset=utf-8"
     },
     "body" : {
-        "number-of-players" : 10,
-        "players-per-team" : 2,
-        "max-score" : 77,
         "team-list" : [
-            { "members": ["주현", "숭"], "rank": 1},
-            { "members": ["성우", "상현"], "rank": 2},
-            { "members": ["명빈", "태윤"], "rank": 3},
-            { "members": ["희정", "주호"], "rank": 4},  
-            { "members": ["우진", "종찬"], "rank": 5},
+            { "members": ["주현", "숭"] },
+            { "members": ["성우", "상현"] },
+            { "members": ["명빈", "태윤"] },
+            { "members": ["희정", "주호"] },  
+            { "members": ["우진", "종찬"] },
         ],
         "score-list" : [
             { "name": "주현", "score": 67 },

@@ -9,7 +9,7 @@ const initialState = {
    * { id: number, name: string } */
   playerList: [],
   /* list of teams in the following format
-   * { id: number, members: arrayOf(player) } */
+   * { id: number, members: arrayOf({ id: number, name: string }) } */
   teamList: [],
   /* list of scores in the following format
    * { id: number, prevScore: number, score: number } */
@@ -49,9 +49,8 @@ const players = (state = initialState, action) => {
   switch (action.type) {
     case SET_PLAYERS: {
       const playerList = action.payload;
-      const scoreList = playerList.map((player) => ({ id: player.id, prevScore: 0, score: 0 }));
-      const selectedList = playerList.map((player) => ({ id: player.id, selected: false }));
-
+      const scoreList = playerList.map((player) => ({ ...player, prevScore: 0, score: 0 }));
+      const selectedList = playerList.map((player) => ({ ...player, selected: false }));
       return {
         ...state,
         playerList,
@@ -59,11 +58,13 @@ const players = (state = initialState, action) => {
         selectedList,
       };
     }
-    case SET_TEAMS:
+    case SET_TEAMS: {
+      const teamList = action.payload;
       return {
         ...state,
-        teamList: action.payload,
+        teamList,
       };
+    }
     case SET_SCORE: {
       const { id, score } = action.payload;
       const scoreList = state.scoreList.map((entry) => {
