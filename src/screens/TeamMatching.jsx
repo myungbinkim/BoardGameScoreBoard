@@ -58,7 +58,7 @@ TeamTable.propTypes = {
 };
 
 export default function TeamMatching() {
-  const players = useSelector((state) => state.players.playerlist);
+  const players = useSelector((state) => state.players.playerList);
   const NumberOfMembers = FindNumberOfMembers(players.length);
   const shuffle = ArrayShuffle(players);
   const dispatch = useDispatch();

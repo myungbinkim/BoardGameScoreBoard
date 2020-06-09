@@ -7,78 +7,16 @@ const RESET_SELECTED = 'RESET_SELECTED';
 const initialState = {
   /* list of players in the following format
    * { id: number, name: string } */
-  playerlist: [],
+  playerList: [],
   /* list of teams in the following format
    * { id: number, members: arrayOf(player) } */
   teamList: [],
   /* list of scores in the following format
    * { id: number, prevScore: number, score: number } */
-  scoreList: [
-    {
-      id: 0, prevScore: 0, score: 0,
-    },
-    {
-      id: 1, prevScore: 0, score: 0,
-    },
-    {
-      id: 2, prevScore: 0, score: 0,
-    },
-    {
-      id: 3, prevScore: 0, score: 0,
-    },
-    {
-      id: 4, prevScore: 0, score: 0,
-    },
-    {
-      id: 5, prevScore: 0, score: 0,
-    },
-    {
-      id: 6, prevScore: 0, score: 0,
-    },
-    {
-      id: 7, prevScore: 0, score: 0,
-    },
-    {
-      id: 8, prevScore: 0, score: 0,
-    },
-    {
-      id: 9, prevScore: 0, score: 0,
-    },
-  ],
+  scoreList: [],
   /* list of selected in the following format
    * { id: number, selected: bool } */
-  selectedList: [
-    {
-      id: 0, selected: false,
-    },
-    {
-      id: 1, selected: false,
-    },
-    {
-      id: 2, selected: false,
-    },
-    {
-      id: 3, selected: false,
-    },
-    {
-      id: 4, selected: false,
-    },
-    {
-      id: 5, selected: false,
-    },
-    {
-      id: 6, selected: false,
-    },
-    {
-      id: 7, selected: false,
-    },
-    {
-      id: 8, selected: false,
-    },
-    {
-      id: 9, selected: false,
-    },
-  ],
+  selectedList: [],
   allPlayersSelected: false,
 };
 
@@ -109,11 +47,18 @@ export const resetSelected = () => ({
 
 const players = (state = initialState, action) => {
   switch (action.type) {
-    case SET_PLAYERS:
+    case SET_PLAYERS: {
+      const playerList = action.payload;
+      const scoreList = playerList.map((player) => ({ id: player.id, prevScore: 0, score: 0 }));
+      const selectedList = playerList.map((player) => ({ id: player.id, selected: false }));
+
       return {
         ...state,
-        playerlist: action.payload,
+        playerList,
+        scoreList,
+        selectedList,
       };
+    }
     case SET_TEAMS:
       return {
         ...state,

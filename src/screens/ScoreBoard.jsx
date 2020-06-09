@@ -34,7 +34,6 @@ const renderPlayerButton = (player, selectedList) => {
   };
   const scoreArray = Array.from(new Array(100), (x, i) => i + 1);
 
-  window.console.log(`key: ${player.name}`);
   return (
     <DropdownButton
       style={{
@@ -92,7 +91,6 @@ const Team = (props) => {
   const { id, members } = team;
   const key = `team-${id}`;
 
-  window.console.log(`key: ${key}`);
   return (
     <Container className="border" key={key} fluid>
       <Row style={{ height: 50 }} key={key}>

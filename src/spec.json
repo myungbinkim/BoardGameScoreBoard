@@ -16,3 +16,35 @@
         {"team" : ["숭"], "score" : 0, "ranking" : 5},
     ]
 }
+
+{
+    "url" : "/api/scores?date={20200609}",
+    "_comment" : "해당 date의 경기 결과.",
+    "headers" : {
+        "Content-Type": "application/json;charset=utf-8"
+    },
+    "body" : {
+        "number-of-players" : 10,
+        "players-per-team" : 2,
+        "max-score" : 77,
+        "team-list" : [
+            { "members": ["주현", "숭"], "rank": 1},
+            { "members": ["성우", "상현"], "rank": 2},
+            { "members": ["명빈", "태윤"], "rank": 3},
+            { "members": ["희정", "주호"], "rank": 4},  
+            { "members": ["우진", "종찬"], "rank": 5},
+        ],
+        "score-list" : [
+            { "name": "주현", "score": 67 },
+            { "name": "숭", "score": 33 },
+            { "name": "성우", "score": 0 },
+            { "name": "상현", "score": 30 },
+            { "name": "명빈", "score": 15 },
+            { "name": "태윤", "score": 54 },
+            { "name": "희정", "score": 40 },
+            { "name": "주호", "score": 32 },
+            { "name": "우진", "score": 22 },
+            { "name": "종찬", "score": 5 },
+        ]
+    }
+}
