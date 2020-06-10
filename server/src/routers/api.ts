@@ -45,6 +45,15 @@ function getRank(req: Request, res: Response) {
   }
 }
 
+function insertScore(req: Request, res: Response) {
+  try {
+    console.log(req.body);
+  } catch (e) {
+    res.status(404).send('something fail');
+  }
+
+}
+
 const apiRouter = express.Router();
 
 apiRouter.use((req: Request, res: Response, next: NextFunction) => {
@@ -56,6 +65,7 @@ apiRouter.use((req: Request, res: Response, next: NextFunction) => {
 apiRouter.get('/user', getUser);
 apiRouter.get('/user/:id', getUser);
 apiRouter.get('/rank', getRank);
+apiRouter.post('/scores', insertScore);
 
 apiRouter.get('*', (req: Request, res: Response) => {
   res.status(404).send('invalid path');
