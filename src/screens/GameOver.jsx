@@ -6,6 +6,10 @@ import { useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
+const getTeamList = (teams) => (
+  teams.map((team) => (team.members.map((member) => member.name)))
+);
+
 const getScoreList = (scores, players) => (
   players.map((player) => {
     let score = 0;
@@ -27,20 +31,19 @@ const getTodaysDate = () => {
   return `${year}${month}${day}`;
 };
 
-const request = async (data, date) => {
-  const response = await fetch(`/api/scores?date=${date}`, {
+const request = (data, date) => {
+  fetch(`/api/scores?date=${date}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(data),
-  });
-  const okay = await response.json();
-  window.console.log(okay);
+  }).then((response) => (response.json()))
+    .then((okay) => { window.console.log(okay); });
 };
 
 const postResult = (teams, scores, players) => {
-  const teamList = teams.map((team) => ({ members: team.members }));
+  const teamList = getTeamList(teams);
   const scoreList = getScoreList(scores, players);
   request({ 'team-list': teamList, 'score-list': scoreList }, getTodaysDate());
 };
