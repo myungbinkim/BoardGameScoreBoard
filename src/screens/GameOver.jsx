@@ -18,30 +18,31 @@ const getScoreList = (scores, players) => (
   })
 );
 
+const getTodaysDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+
+  return `${year}${month}${day}`;
+};
+
+const request = async (data, date) => {
+  const response = await fetch(`/api/scores?date=${date}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify(data),
+  });
+  const okay = await response.json();
+  window.console.log(okay);
+};
+
 const postResult = (teams, scores, players) => {
   const teamList = teams.map((team) => ({ members: team.members }));
   const scoreList = getScoreList(scores, players);
-
-  const body = {
-    'team-list': teamList,
-    'score-list': scoreList,
-  };
-
-  const request = (data) => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    fetch(`/api/scores?date=${year}${month}${day}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify(data),
-    });
-  };
-
-  request(body);
+  request({ 'team-list': teamList, 'score-list': scoreList }, getTodaysDate());
 };
 
 const GameOver = () => {
