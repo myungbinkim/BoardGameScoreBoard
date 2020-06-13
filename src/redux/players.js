@@ -8,6 +8,7 @@ const initialState = {
   /* list of players in the following format
    * { id: number, name: string } */
   playerList: [],
+  playersPerTeam: 2,
   /* list of teams in the following format
    * { id: number, members: arrayOf({ id: number, name: string }) } */
   teamList: [],

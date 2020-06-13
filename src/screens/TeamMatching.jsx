@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import BootstrapTable from 'react-bootstrap-table-next';
+import PropTypes from 'prop-types';
+import ReactCardFlip from 'react-card-flip';
+import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import { setTeams } from '../redux/players';
 
 const ArrayShuffle = (arr) => {
@@ -16,68 +18,86 @@ const ArrayShuffle = (arr) => {
   return result;
 };
 
-const FindNumberOfMembers = (arrsize) => {
-  for (let num = 2; num < arrsize; num += 1) {
-    if (arrsize % num === 0) return num;
+const makeTeamList = (arr, playersPerTeam) => {
+  const teamList = [];
+  for (let i = 0, j = 0; j < arr.length; j += playersPerTeam, i += 1) {
+    teamList[i] = {
+      id: i,
+      members: arr.slice(j, j + playersPerTeam),
+    };
   }
-  return 1;
+  return teamList;
 };
 
-function TeamTable(props) {
-  const { data } = props;
-  const columns = [{
-    dataField: 'id',
-    text: '팀',
-    headerAlign: 'center',
-    align: 'center',
-  }, {
-    dataField: 'players',
-    text: '팀원',
-    headerAlign: 'center',
-    align: 'center',
-  }];
-  const showData = data.map((elem) => {
-    const obj = { id: elem.id + 1 };
-    obj.players = elem.members.reduce((s, e) => `${s + e.name} `, '');
-    return obj;
-  });
-
+function TeamCard(props) {
+  const { id, players } = props;
+  const { onClick, front } = props;
+  const className = 'mb-2 mr-2 text-center';
   return (
-    <BootstrapTable keyField="id" data={showData} columns={columns} headerAlign="center" bordered striped />
+    <Card onClick={onClick} key={id} className={className} border="dark">
+      <Card.Header as="h5">{`${id + 1} 팀`}</Card.Header>
+      <ListGroup className="list-group-flush">
+        {players.map((player) => (
+          front ? <ListGroup.Item key={player.id}>?</ListGroup.Item>
+            : <ListGroup.Item key={player.id}>{player.name}</ListGroup.Item>
+        ))}
+      </ListGroup>
+    </Card>
   );
 }
 
-TeamTable.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
+TeamCard.propTypes = {
+  id: PropTypes.number.isRequired,
+  players: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
-    members: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })).isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
+  onClick: PropTypes.func.isRequired,
+  front: PropTypes.bool.isRequired,
+};
+
+function TeamView(props) {
+  const { id, players } = props;
+  const [isFlipped, setFlipped] = useState(false);
+  const front = true;
+  const onClick = () => { setFlipped(!isFlipped); };
+  return (
+    <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
+      <TeamCard id={id} players={players} onClick={onClick} front={front} />
+      <TeamCard id={id} players={players} onClick={onClick} front={!front} />
+    </ReactCardFlip>
+  );
+}
+
+TeamView.propTypes = {
+  id: PropTypes.number.isRequired,
+  players: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   })).isRequired,
 };
 
 export default function TeamMatching() {
   const players = useSelector((state) => state.players.playerList);
-  const NumberOfMembers = FindNumberOfMembers(players.length);
-  const shuffle = ArrayShuffle(players);
+  const playersPerTeam = useSelector((state) => state.players.playersPerTeam);
+  let teamList = useSelector((state) => state.players.teamList);
   const dispatch = useDispatch();
 
-  const Teams = [];
-  for (let i = 0, j = 0; j < shuffle.length; j += NumberOfMembers, i += 1) {
-    Teams[i] = {
-      id: i,
-      members: shuffle.slice(j, j + NumberOfMembers),
-    };
+  if (teamList.length === 0) {
+    teamList = makeTeamList(ArrayShuffle(players), playersPerTeam);
   }
 
-  useEffect(() => () => { dispatch(setTeams(Teams)); });
+  useEffect(() => () => { dispatch(setTeams(teamList)); });
 
   return (
     <div>
-      <TeamTable data={Teams} />
+      <Container className="row">
+        {teamList.map((team) => (
+          <TeamView id={team.id} players={team.members} key={team.id} />
+        ))}
+      </Container>
       <Link to="/score-board">
-        <Button variant="success">GAME START</Button>
+        <Button variant="success" size="lg" block>GAME START</Button>
       </Link>
     </div>
   );
