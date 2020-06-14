@@ -23,7 +23,7 @@ function getRank(req: Request, res: Response) {
   try {
     // const teamType = req.query.team;
     const term = Number(req.query.last_days);
-    if (!term || term == 0 || term > 365) {
+    if (!term || term === 0 || term > 365) {
       res.status(404).send('days is too long OR invalid value');
       return;
     }
@@ -47,18 +47,18 @@ function getRank(req: Request, res: Response) {
 
 function insertScore(req: Request, res: Response) {
   try {
-    console.log(req.body);
+    // console.log(req.body);
+    res.status(201).end();
   } catch (e) {
     res.status(404).send('something fail');
   }
-
 }
 
 const apiRouter = express.Router();
 
 apiRouter.use((req: Request, res: Response, next: NextFunction) => {
-  const time = Date.now();
-  console.log(`api requested at ${time}`);
+  // const time = Date.now();
+  // console.log(`api requested at ${time}`);
   next();
 });
 

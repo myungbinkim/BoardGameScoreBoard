@@ -12,7 +12,8 @@
     "serve": "cd server && yarn install && yarn run build && yarn run serve",
     "watch": "nodemon --exec \"yarn run build\" --ext js,jsx --watch src",
     "start": "concurrently \"yarn run serve\" \"yarn run watch\" ",
-    "lint": "eslint src --ext .js,.jsx"
+    "lint": "eslint src --ext .js,.jsx",
+    "test": "cd server && yarn run test"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
