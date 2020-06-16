@@ -1,10 +1,14 @@
 /* react */
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 /* bootstrap */
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
+
+import { replaySelected } from '../redux/players';
 
 const getTeamList = (teams) => (
   teams.map((team) => (team.members.map((member) => member.name)))
@@ -52,6 +56,7 @@ const GameOver = () => {
   const teams = useSelector((state) => state.players.teamList);
   const scores = useSelector((state) => state.players.scoreList);
   const players = useSelector((state) => state.players.playerList);
+  const dispatch = useDispatch();
 
   useEffect(() => postResult(teams, scores, players));
 
@@ -60,6 +65,18 @@ const GameOver = () => {
       <Row>
         GAME OVER :)
       </Row>
+      <Link to="/score-board">
+        <Button
+          onClick={() => {
+            dispatch(replaySelected());
+          }}
+        >
+          REPLAY
+        </Button>
+      </Link>
+      <Link to="/">
+        <Button>HOME</Button>
+      </Link>
     </Container>
   );
 };

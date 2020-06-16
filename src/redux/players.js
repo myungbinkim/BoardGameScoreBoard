@@ -3,6 +3,7 @@ const SET_TEAMS = 'SET_TEAMS';
 const SET_SCORE = 'SET_SCORE';
 const SET_SELECTED = 'SET_SELECTED';
 const RESET_SELECTED = 'RESET_SELECTED';
+const REPLAY_SELECTED = 'REPLAY_SELECTED';
 
 const initialState = {
   /* list of players in the following format
@@ -43,6 +44,11 @@ export const setSelected = (id) => ({
 
 export const resetSelected = () => ({
   type: RESET_SELECTED,
+  payload: {},
+});
+
+export const replaySelected = () => ({
+  type: REPLAY_SELECTED,
   payload: {},
 });
 
@@ -105,6 +111,18 @@ const players = (state = initialState, action) => {
       }
       const scoreList = state.scoreList.map((entry) => (
         { ...entry, prevScore: entry.score }));
+      const selectedList = state.selectedList.map((entry) => (
+        { ...entry, selected: false }));
+      const allPlayersSelected = false;
+      return {
+        ...state,
+        scoreList,
+        selectedList,
+        allPlayersSelected,
+      };
+    }
+    case REPLAY_SELECTED: {
+      const scoreList = state.playerList.map((player) => ({ ...player, prevScore: 0, score: 0 }));
       const selectedList = state.selectedList.map((entry) => (
         { ...entry, selected: false }));
       const allPlayersSelected = false;
