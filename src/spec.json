@@ -18,8 +18,8 @@
 }
 
 {
-    "url" : "/api/scores?date={20200609}",
-    "_comment" : "해당 date의 경기 결과.",
+    "url" : "/api/scores?date={20200621143332}",
+    "_comment" : "해당 timestamp의 경기 결과.",
     "headers" : {
         "Content-Type": "application/json;charset=utf-8"
     },

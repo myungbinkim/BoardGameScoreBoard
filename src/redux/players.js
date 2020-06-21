@@ -50,15 +50,10 @@ const players = (state = initialState, action) => {
     case SET_SCORES: {
       const scores = action.payload;
       const playerList = state.playerList.map((player) => {
-        const finalScore = scores.reduce((acc, cur) => {
-          if (cur.id === player.id) {
-            return cur.score;
-          }
-          return acc;
-        });
+        const finalScore = scores.find((entry) => entry.id === player.id).score;
         return {
           ...player,
-          finalScore,
+          score: finalScore,
         };
       });
       return {
