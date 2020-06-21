@@ -8,21 +8,20 @@ import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
-import { replaySelected } from '../redux/players';
 import postResult from '../components/PostResult';
+import { resetScores } from '../redux/players';
 
 const GameOver = () => {
   const teams = useSelector((state) => state.players.teamList);
-  const scores = useSelector((state) => state.players.scoreList);
   const players = useSelector((state) => state.players.playerList);
   const dispatch = useDispatch();
 
-  useEffect(() => postResult(teams, scores, players));
+  useEffect(() => postResult(teams, players));
 
   const worstTeam = teams.map((team) => ({
     score: team.members.reduce((acc, m) => {
       let total = acc;
-      scores.forEach((entry) => {
+      players.forEach((entry) => {
         if (entry.id === m.id) {
           total += entry.score;
         }
@@ -38,7 +37,7 @@ const GameOver = () => {
         <Button
           variant="warning"
           onClick={() => {
-            dispatch(replaySelected());
+            dispatch(resetScores());
           }}
         >
           REPLAY

@@ -10,14 +10,28 @@ import Row from 'react-bootstrap/Row';
 import PlayerButton from './ScoreBoardPlayerButton';
 import ScoreBar from './ScoreBar';
 
+const getTotalScore = (members, playerStates) => {
+  let totalScore = 0;
+  members.forEach((member) => {
+    playerStates.forEach((val, i) => {
+      if (i === member.id) {
+        totalScore += val.currentScore;
+      }
+    });
+  });
+  return totalScore;
+};
+
 const Team = (props) => {
   const {
     team,
+    playerStates,
+    setPlayerStateAt,
     maxScore,
-    selectedList,
   } = props;
-  const { id, members, score } = team;
+  const { id, members } = team;
   const teamKey = `team-${id}`;
+  const totalScore = getTotalScore(members, playerStates);
 
   return (
     <Container className="border" fluid>
@@ -35,11 +49,12 @@ const Team = (props) => {
           <PlayerButton
             key={`${teamKey}-${member.name}`}
             player={member}
-            selectedList={selectedList}
+            playerStates={playerStates}
+            setPlayerStateAt={setPlayerStateAt}
           />
         ))}
       </Row>
-      <ScoreBar totalScore={score} maxScore={maxScore} />
+      <ScoreBar totalScore={totalScore} maxScore={maxScore} />
     </Container>
   );
 };
@@ -50,13 +65,14 @@ Team.propTypes = {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
     })).isRequired,
-    score: PropTypes.number.isRequired,
   }).isRequired,
-  maxScore: PropTypes.number.isRequired,
-  selectedList: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
+  playerStates: PropTypes.arrayOf(PropTypes.shape({
+    currentScore: PropTypes.number.isRequired,
+    prevScore: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
   })).isRequired,
+  setPlayerStateAt: PropTypes.func.isRequired,
+  maxScore: PropTypes.number.isRequired,
 };
 
 export default Team;

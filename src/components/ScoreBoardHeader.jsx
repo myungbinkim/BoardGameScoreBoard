@@ -1,6 +1,7 @@
 /* react */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 /* react-bootstrap */
 import Container from 'react-bootstrap/Container';
@@ -9,7 +10,9 @@ import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 
 const Header = (props) => {
-  const { round, maxScore } = props;
+  const { round } = props;
+  const maxScore = useSelector((state) => state.game.maxScore);
+  
   return (
     <Container>
       <Row>
@@ -31,7 +34,6 @@ const Header = (props) => {
 };
 Header.propTypes = {
   round: PropTypes.number.isRequired,
-  maxScore: PropTypes.number.isRequired,
 };
 
 export default Header;

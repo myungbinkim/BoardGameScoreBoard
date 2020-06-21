@@ -5,26 +5,19 @@ import PropTypes from 'prop-types';
 /* react-bootstrap */
 import Dropdown from 'react-bootstrap/Dropdown';
 
-/* react-redux */
-import { useDispatch } from 'react-redux';
-import { setSelected, setScore } from '../redux/players';
-
-const isPlayerSelected = (id, selectedList) => (
-  selectedList.find((x) => (x.id === id)).selected
-);
-
 const PlayerButton = (props) => {
-  const { player, selectedList } = props;
-  const dispatch = useDispatch();
-  const selected = isPlayerSelected(player.id, selectedList);
-  const variant = selected ? 'success' : 'secondary';
+  const { player, playerStates, setPlayerStateAt } = props;
+  const setPlayerState = (state) => setPlayerStateAt(player.id, state);
+  const variant = playerStates[player.id].selected ? 'success' : 'secondary';
 
   const handleSelect = (eventKey) => {
-    const value = Number(eventKey);
-    dispatch(setScore(player.id, value));
-    if (!selected) {
-      dispatch(setSelected(player.id));
-    }
+    const playerState = playerStates[player.id];
+    const newScore = playerState.prevScore + Number(eventKey);
+    setPlayerState({
+      ...playerState,
+      currentScore: newScore,
+      selected: true,
+    });
   };
   const scoreArray = Array.from(new Array(101), (x, i) => i);
 
@@ -64,10 +57,12 @@ PlayerButton.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
-  selectedList: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
+  playerStates: PropTypes.arrayOf(PropTypes.shape({
+    currentScore: PropTypes.number.isRequired,
+    prevScore: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
   })).isRequired,
+  setPlayerStateAt: PropTypes.func.isRequired,
 };
 
 export default PlayerButton;

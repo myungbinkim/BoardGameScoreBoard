@@ -79,7 +79,7 @@ TeamView.propTypes = {
 
 export default function TeamMatching() {
   const players = useSelector((state) => state.players.playerList);
-  const playersPerTeam = useSelector((state) => state.players.playersPerTeam);
+  const playersPerTeam = useSelector((state) => state.game.playersPerTeam);
   let teamList = useSelector((state) => state.players.teamList);
   const dispatch = useDispatch();
 
