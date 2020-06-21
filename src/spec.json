@@ -1,4 +1,19 @@
-{"players": [{"id": 0, "name": "남주현"}, {"id": 1, "name": "김숭"}]}
+{
+    "url" : "/api/participatants?default={DB1-4}",
+    "_comment" : "1-4 팀원의 리스트를 반환한다",
+    "players" : [
+        {"id": 0, "name": "남주현"}, 
+        {"id": 1, "name": "김숭"},
+        {"id": 2, "name": "김명빈"}, 
+        {"id": 3, "name": "이주호"},
+        {"id": 4, "name": "양희정"}, 
+        {"id": 5, "name": "안종찬"},
+        {"id": 6, "name": "박상현"}, 
+        {"id": 7, "name": "장성우"},
+        {"id": 8, "name": "남주현"}, 
+        {"id": 9, "name": "김태윤"}
+    ]
+}
 
 {
     "url" : "/api/rank?team={single}&last_days={30}",

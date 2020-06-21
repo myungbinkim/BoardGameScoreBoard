@@ -15,33 +15,103 @@ import { Link } from 'react-router-dom';
 import Participatant from './Participatant';
 import Absentee from './Absentee';
 import { setPlayers } from '../redux/players';
+import { setMaxScore, setPlayersPerTeam } from '../redux/game';
 
 
 const PartList = () => {
+  const [check1, setCheck1] = useState(false);
+  const [check2, setCheck2] = useState(false);
+  const [check3, setCheck3] = useState(false);
+  const playersPerTeam = useSelector((state) => state.game.playersPerTeam);
   const partInfo = useSelector((state) => state.participatants.partInfo);
   const dispatch = useDispatch();
+  const setGameState = (score, count) => {
+    window.console.log(score);
+    dispatch(setMaxScore(score));
+    window.console.log(count);
+    dispatch(setPlayersPerTeam(count));
+    if (count === 1) {
+      setCheck1(true);
+      setCheck2(false);
+      setCheck3(false);
+    } else if (count === 2) {
+      setCheck1(false);
+      setCheck2(true);
+      setCheck3(false);
+    } else {
+      setCheck1(false);
+      setCheck2(false);
+      setCheck3(true);
+    }
+  };
+  const decideNext = () => {
+    const numOfPlayers = partInfo.filter((part) => part.selected === true).length;
+    return ((check1 || check2 || check3)
+      && ((numOfPlayers
+      % playersPerTeam) === 0)
+    );
+  };
+
   return (
     <div>
       <Jumbotron fluid>
         <Row>
           <Col>
+            <Form>
+              <Form.Check inline>
+                <Form.Check.Input
+                  inline
+                  id="1"
+                  type="checkbox"
+                  checked={check1}
+                  onChange={() => setGameState(67, 1)}
+                />
+                <Form.Check.Label> 개인전 </Form.Check.Label>
+              </Form.Check>
+              <Form.Check inline>
+                <Form.Check.Input
+                  inline
+                  id="2"
+                  type="checkbox"
+                  checked={check2}
+                  onClick={() => setGameState(77, 2)}
+                />
+                <Form.Check.Label> 듀오 </Form.Check.Label>
+              </Form.Check>
+              <Form.Check inline>
+                <Form.Check.Input
+                  inline
+                  id="3"
+                  type="checkbox"
+                  checked={check3}
+                  onClick={() => setGameState(104, 3)}
+                />
+                <Form.Check.Label> 트리오 </Form.Check.Label>
+              </Form.Check>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <h1>참가자</h1>
           </Col>
           <Col>
-            <Link to="/team-matching">
-              <Button
-                variant="success"
-                onClick={() => dispatch(
-                  setPlayers(
-                    partInfo.filter((part) => part.selected === true).map(
-                      (part) => ({ id: part.id, name: part.name }),
+            {decideNext() && (
+              <Link to="/team-matching">
+                <Button
+                  variant="success"
+                  onClick={() => dispatch(
+                    setPlayers(
+                      partInfo
+                        .filter((part) => part.selected === true)
+                        .map((part) => ({ id: part.id, name: part.name })),
                     ),
-                  ),
-                )}
-              >
-                NEXT
-              </Button>
-            </Link>
+                  )}
+                >
+                  NEXT
+                </Button>
+              </Link>
+            )}
           </Col>
         </Row>
         <Container>
