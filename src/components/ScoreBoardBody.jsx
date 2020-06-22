@@ -10,29 +10,28 @@ import Container from 'react-bootstrap/Container';
 import NextRoundButton from './NextRoundButton';
 import Team from './ScoreBoardTeam';
 
-const useStateArray = (size, initialState) => {
-  const initialArray = Array.from(Array(size), () => initialState);
-  const [stateArray, setStateArray] = useState(initialArray);
-  const setStateAt = (idx, state) => {
-    const newStateArray = stateArray.map((val, i) => {
-      if (i === idx) {
-        return state;
-      }
-      return val;
-    });
-    setStateArray(newStateArray);
+const usePlayerStates = (playerList, initialState) => {
+  const initialMap = new Map();
+  playerList.forEach((player) => {
+    initialMap.set(player.id, initialState);
+  });
+
+  const [stateMap, setStateMap] = useState(initialMap);
+  const setStateAt = (key, state) => {
+    setStateMap(new Map(stateMap.set(key, state)));
   };
   const updateAllStates = () => {
-    const newStateArray = stateArray.map((val) => (
-      {
-        ...val,
-        prevScore: val.currentScore,
+    stateMap.forEach((value, key, map) => {
+      map.set(key, {
+        ...value,
+        prevScore: value.currentScore,
         selected: false,
-      }
-    ));
-    setStateArray(newStateArray);
+      });
+    });
+    const newStateMap = new Map(stateMap);
+    setStateMap(newStateMap);
   };
-  return [stateArray, setStateAt, updateAllStates];
+  return [stateMap, setStateAt, updateAllStates];
 };
 
 const ScoreBoardBody = (props) => {
@@ -41,7 +40,7 @@ const ScoreBoardBody = (props) => {
   /* redux */
   const maxScore = useSelector((state) => state.game.maxScore);
   const teamList = useSelector((state) => state.players.teamList);
-  const playerCount = useSelector((state) => state.players.playerList).length;
+  const playerList = useSelector((state) => state.players.playerList);
 
   /* player states */
   const initialState = {
@@ -53,7 +52,7 @@ const ScoreBoardBody = (props) => {
     playerStates,
     setPlayerStateAt,
     updateAllStates,
-  ] = useStateArray(playerCount, initialState);
+  ] = usePlayerStates(playerList, initialState);
 
   return (
     <Container>

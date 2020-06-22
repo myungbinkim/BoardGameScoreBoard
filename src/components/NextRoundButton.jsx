@@ -13,11 +13,7 @@ import { setScores } from '../redux/players';
 const getTotalScore = (members, playerStates) => {
   let totalScore = 0;
   members.forEach((member) => {
-    playerStates.forEach((val, i) => {
-      if (i === member.id) {
-        totalScore += val.currentScore;
-      }
-    });
+    totalScore += playerStates.get(member.id).currentScore;
   });
   return totalScore;
 };
@@ -31,9 +27,10 @@ const checkGameOver = (teamList, playerStates, maxScore) => {
   return isOver;
 };
 
-const checkAllSelected = (playerStates) => (
-  playerStates.reduce((acc, cur) => acc && cur.selected)
-);
+const checkAllSelected = (playerStates) => {
+  const stateArray = Array.from(playerStates.values());
+  return stateArray.reduce((acc, cur) => acc && cur.selected);
+};
 
 const getFinalScores = (playerStates) => {
   const finalScores = [];
@@ -101,11 +98,7 @@ NextRoundButton.propTypes = {
       })).isRequired,
     }).isRequired,
   ).isRequired,
-  playerStates: PropTypes.arrayOf(PropTypes.shape({
-    currentScore: PropTypes.number.isRequired,
-    prevScore: PropTypes.number.isRequired,
-    selected: PropTypes.bool.isRequired,
-  })).isRequired,
+  playerStates: PropTypes.instanceOf(Map).isRequired,
   updateAllStates: PropTypes.func.isRequired,
   maxScore: PropTypes.number.isRequired,
   round: PropTypes.number.isRequired,

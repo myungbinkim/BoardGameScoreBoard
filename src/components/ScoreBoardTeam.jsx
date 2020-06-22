@@ -13,11 +13,8 @@ import ScoreBar from './ScoreBar';
 const getTotalScore = (members, playerStates) => {
   let totalScore = 0;
   members.forEach((member) => {
-    playerStates.forEach((val, i) => {
-      if (i === member.id) {
-        totalScore += val.currentScore;
-      }
-    });
+    const score = playerStates.get(member.id).currentScore;
+    totalScore += score;
   });
   return totalScore;
 };
@@ -66,11 +63,7 @@ Team.propTypes = {
       name: PropTypes.string.isRequired,
     })).isRequired,
   }).isRequired,
-  playerStates: PropTypes.arrayOf(PropTypes.shape({
-    currentScore: PropTypes.number.isRequired,
-    prevScore: PropTypes.number.isRequired,
-    selected: PropTypes.bool.isRequired,
-  })).isRequired,
+  playerStates: PropTypes.instanceOf(Map).isRequired,
   setPlayerStateAt: PropTypes.func.isRequired,
   maxScore: PropTypes.number.isRequired,
 };

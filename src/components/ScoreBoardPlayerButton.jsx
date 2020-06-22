@@ -8,10 +8,10 @@ import Dropdown from 'react-bootstrap/Dropdown';
 const PlayerButton = (props) => {
   const { player, playerStates, setPlayerStateAt } = props;
   const setPlayerState = (state) => setPlayerStateAt(player.id, state);
-  const variant = playerStates[player.id].selected ? 'success' : 'secondary';
+  const variant = playerStates.get(player.id).selected ? 'success' : 'secondary';
 
   const handleSelect = (eventKey) => {
-    const playerState = playerStates[player.id];
+    const playerState = playerStates.get(player.id);
     const newScore = playerState.prevScore + Number(eventKey);
     setPlayerState({
       ...playerState,
@@ -57,11 +57,7 @@ PlayerButton.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
-  playerStates: PropTypes.arrayOf(PropTypes.shape({
-    currentScore: PropTypes.number.isRequired,
-    prevScore: PropTypes.number.isRequired,
-    selected: PropTypes.bool.isRequired,
-  })).isRequired,
+  playerStates: PropTypes.instanceOf(Map).isRequired,
   setPlayerStateAt: PropTypes.func.isRequired,
 };
 

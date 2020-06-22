@@ -15,7 +15,7 @@ const ScoreBar = (props) => {
     progress = 'success';
   } else if (percentage > 50 && percentage <= 75) {
     progress = 'warning';
-  } else if (percentage > 75 && percentage <= 99) {
+  } else if (percentage > 75 && percentage <= 100) {
     progress = 'danger';
   } else {
     progress = 'dark';
