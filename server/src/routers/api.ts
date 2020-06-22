@@ -6,14 +6,8 @@ import db from '../models/db';
 async function getUser(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
-    const user = await db.getUser() as any;
-    const userArray: Array<User> = Object.values(user);
-    if (id) {
-      const target = userArray.filter((elem) => id === elem.id)[0];
-      res.send(target);
-    } else {
-      res.send(user);
-    }
+    const user = await db.getUser(id) as User | Array<User>;
+    res.send(user);
   } catch (e) {
     res.status(404).send('something fail');
   }
