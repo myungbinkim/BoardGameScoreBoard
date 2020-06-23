@@ -16,6 +16,7 @@ import Participatant from './Participatant';
 import Absentee from './Absentee';
 import { setPlayers } from '../redux/players';
 import { setMaxScore, setPlayersPerTeam } from '../redux/game';
+import { setPartInfo } from '../redux/participatants';
 
 
 const PartList = () => {
@@ -60,7 +61,6 @@ const PartList = () => {
             <Form>
               <Form.Check inline>
                 <Form.Check.Input
-                  inline
                   id="1"
                   type="checkbox"
                   checked={check1}
@@ -70,7 +70,6 @@ const PartList = () => {
               </Form.Check>
               <Form.Check inline>
                 <Form.Check.Input
-                  inline
                   id="2"
                   type="checkbox"
                   checked={check2}
@@ -80,7 +79,6 @@ const PartList = () => {
               </Form.Check>
               <Form.Check inline>
                 <Form.Check.Input
-                  inline
                   id="3"
                   type="checkbox"
                   checked={check3}
@@ -141,7 +139,16 @@ const PartList = () => {
 };
 
 const ParticipatantList = () => {
+  const dispatch = useDispatch();
   const [clicked, setClicked] = useState(false);
+  const request = () => {
+    return (fetch('/api/group/DB1-4', {
+      method: 'GET',
+    }).then((response) => {
+      return response.json();
+    }));
+  };
+  const playerList = [];
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -169,6 +176,17 @@ const ParticipatantList = () => {
                 <Card.Body
                   onClick={() => {
                     setClicked(!clicked);
+                    request().then((value) => (value.map((player) => (playerList.push({
+                      id: player.id,
+                      name: player.name,
+                      selected: true,
+                    })))));
+                    window.console.log(playerList);
+                    dispatch(setPartInfo(playerList));
+                    /*
+                    const aa = request();
+                    window.console.log(aa);
+                    */
                   }}
                 >
                   DB1-4

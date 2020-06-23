@@ -1,5 +1,6 @@
 const SELECT_PART = 'SELECT_PART';
 const SET_PARTICIPATANTS = 'SET_PARTICIPATANTS';
+const SET_PART_INFO = 'SET_PART_INFO';
 
 export const selectPart = (id) => ({
   type: SELECT_PART,
@@ -10,8 +11,14 @@ export const setPart = () => ({
   type: SET_PARTICIPATANTS,
 });
 
+export const setPartInfo = (partinfo) => ({
+  type: SET_PART_INFO,
+  partinfo,
+});
+
 const initialState = {
   partInfo: [
+    /*
     {
       id: 0,
       name: '명빈',
@@ -62,6 +69,7 @@ const initialState = {
       name: '상현',
       selected: true,
     },
+    */
   ],
   players: [],
 };
@@ -79,6 +87,11 @@ function ParticipatantInfo(state = initialState, action) {
         ...state,
         players: state.partInfo.filter((part) => part.selected === true).map((part) => (
           { id: part.id, name: part.name })),
+      };
+    case SET_PART_INFO:
+      return {
+        ...state,
+        partInfo: action.partinfo,
       };
     default:
       return state;
