@@ -14,6 +14,14 @@ describe('API user Test', () => {
   });
 });
 
+describe('API user Test', () => {
+  it('get group', async () => {
+    const res = await request(app).get('/api/group/DB1-4');
+    expect(res.status).toEqual(200);
+    expect(res.body).toBeTruthy();
+  });
+});
+
 describe('API rank Test', () => {
   it('get rank', async () => {
     const res = await request(app).get('/api/rank?team=single&last_days=30');

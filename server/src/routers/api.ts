@@ -12,6 +12,15 @@ async function getUser(req: Request, res: Response) {
     res.status(404).send('something fail');
   }
 }
+async function getGroup(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const user = await db.getGroup(id) as Array<User>;
+    res.send(user);
+  } catch (e) {
+    res.status(404).send('something fail');
+  }
+}
 
 function getRank(req: Request, res: Response) {
   try {
@@ -41,7 +50,6 @@ function getRank(req: Request, res: Response) {
 
 function insertScore(req: Request, res: Response) {
   try {
-    // console.log(req.body);
     res.status(201).end();
   } catch (e) {
     res.status(404).send('something fail');
@@ -58,6 +66,7 @@ apiRouter.use((req: Request, res: Response, next: NextFunction) => {
 
 apiRouter.get('/user', getUser);
 apiRouter.get('/user/:id', getUser);
+apiRouter.get('/group/:id', getGroup);
 apiRouter.get('/rank', getRank);
 apiRouter.post('/scores', insertScore);
 

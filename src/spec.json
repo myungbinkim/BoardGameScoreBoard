@@ -1,5 +1,5 @@
 {
-    "url" : "/api/participatants?default={DB1-4}",
+    "url" : "/api/group/DB1-4",
     "_comment" : "1-4 팀원의 리스트를 반환한다",
     "players" : [
         {"id": 0, "name": "남주현"}, 
