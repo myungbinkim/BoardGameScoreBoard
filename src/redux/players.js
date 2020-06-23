@@ -4,11 +4,9 @@ const SET_SCORES = 'SET_SCORES';
 const RESET_SCORES = 'RESET_SCORES';
 
 const initialState = {
-  /* list of players in the following format
-   * { id: number, name: string, score: number } */
+  /* format: { id: number, name: string, score: number } */
   playerList: [],
-  /* list of teams in the following format
-   * { id: number, members: arrayOf({ id: number, name: string }) } */
+  /* format: { id: number, members: arrayOf({ id: number, name: string }) } */
   teamList: [],
 };
 

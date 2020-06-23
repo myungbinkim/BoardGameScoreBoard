@@ -1,29 +1,19 @@
-const getTeamList = (teams) => (
-  teams.map((team) => (team.members.map((member) => member.name)))
-);
-
-const getScoreList = (players) => (
-  players.map((player) => ({ name: player.name, score: player.score }))
-);
-
-const getTimeStamp = () => {
-  const today = new Date();
-
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  const hours = String(today.getHours()).padStart(2, '0');
-  const minutes = String(today.getMinutes()).padStart(2, '0');
-  const seconds = String(today.getSeconds()).padStart(2, '0');
-
-  const timestamp = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  window.console.log(timestamp);
-
-  return timestamp;
+const getTeamIdOf = (teams, player) => {
+  const found = teams.find((team) => (
+    team.members.some((member) => member.id === player.id)
+  ));
+  return found.id;
 };
 
-const request = (data, date) => {
-  fetch(`/api/scores?date=${date}`, {
+const getResultData = (teams, players) => (
+  players.map((player) => {
+    const teamId = getTeamIdOf(teams, player);
+    return { id: player.id, team: teamId, score: player.score };
+  })
+);
+
+const request = (data) => {
+  fetch('/api/scores', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -33,9 +23,8 @@ const request = (data, date) => {
 };
 
 const postResult = (teams, players) => {
-  const teamList = getTeamList(teams);
-  const scoreList = getScoreList(players);
-  request({ 'team-list': teamList, 'score-list': scoreList }, getTimeStamp());
+  const data = getResultData(teams, players);
+  request({ result: data });
 };
 
 export default postResult;

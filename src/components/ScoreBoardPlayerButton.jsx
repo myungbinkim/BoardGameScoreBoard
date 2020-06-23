@@ -22,7 +22,11 @@ const PlayerButton = (props) => {
   const scoreArray = Array.from(new Array(101), (x, i) => i);
 
   return (
-    <Dropdown key={player.name} onSelect={(eventKey) => handleSelect(eventKey)}>
+    <Dropdown
+      key={player.name}
+      onSelect={(eventKey) => handleSelect(eventKey)}
+      focusFirstItemOnShow="true"
+    >
       <Dropdown.Toggle
         variant={variant}
         style={{
