@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 /* react-bootstrap */
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-
 /* components */
-import PlayerButton from './ScoreBoardPlayerButton';
+import PlayerCell from './ScoreBoardPlayerCell';
 import ScoreBar from './ScoreBar';
 
 const getTotalScore = (members, playerStates) => {
@@ -32,25 +31,23 @@ const Team = (props) => {
 
   return (
     <Container className="border" fluid>
-      <Row
-        key={teamKey}
-        style={{
-          height: '38px',
-          marginRight: '0px',
-          marginLeft: '0px',
-          marginTop: '6px',
-          marginBottom: '6px',
-        }}
-      >
-        {members.map((member) => (
-          <PlayerButton
-            key={`${teamKey}-${member.name}`}
+      {members.map((member) => (
+        <Row
+          key={`${teamKey}-${member.name}`}
+          style={{
+            marginRight: '0px',
+            marginLeft: '0px',
+            marginTop: '6px',
+            marginBottom: '6px',
+          }}
+        >
+          <PlayerCell
             player={member}
             playerStates={playerStates}
             setPlayerStateAt={setPlayerStateAt}
           />
-        ))}
-      </Row>
+        </Row>
+      ))}
       <ScoreBar totalScore={totalScore} maxScore={maxScore} />
     </Container>
   );

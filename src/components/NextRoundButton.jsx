@@ -20,6 +20,11 @@ const getTotalScore = (members, playerStates) => {
 
 const checkGameOver = (teamList, playerStates, maxScore) => {
   let isOver = false;
+
+  if (maxScore <= 67) {
+    return true;
+  }
+
   teamList.forEach((team) => {
     const totalScore = getTotalScore(team.members, playerStates);
     isOver = isOver || (totalScore > maxScore);
