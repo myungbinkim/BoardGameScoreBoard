@@ -1,59 +1,78 @@
 /* react */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* react-bootstrap */
-import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button';
 
-const PlayerButton = (props) => {
-  const { player, playerStates, setPlayerStateAt } = props;
-  const setPlayerState = (state) => setPlayerStateAt(player.id, state);
-  const variant = playerStates.get(player.id).selected ? 'success' : 'secondary';
+/* component */
+import ScoreView from './ScoreBoardScoreView';
 
-  const handleSelect = (eventKey) => {
-    const playerState = playerStates.get(player.id);
-    const newScore = playerState.prevScore + Number(eventKey);
-    setPlayerState({
-      ...playerState,
-      currentScore: newScore,
-      selected: true,
-    });
-  };
-  const scoreArray = Array.from(new Array(101), (x, i) => i);
+const NameButton = (props) => {
+  const {
+    name,
+    size,
+    selected,
+    handleClick,
+  } = props;
+
+  const color = selected ? 'primary' : 'secondary';
 
   return (
-    <Dropdown
-      key={player.name}
-      onSelect={(eventKey) => handleSelect(eventKey)}
-      focusFirstItemOnShow="true"
+    <Button
+      variant={color}
+      className="mr-2"
+      size={size}
+      onClick={handleClick}
+      block
     >
-      <Dropdown.Toggle
-        variant={variant}
-        style={{
-          width: '72px',
-          marginRight: '6px',
-        }}
-      >
-        {player.name}
-      </Dropdown.Toggle>
+      {name}
+    </Button>
+  );
+};
+NameButton.propTypes = {
+  name: PropTypes.string.isRequired,
+  size: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func.isRequired,
+};
 
-      <Dropdown.Menu
-        style={{
-          minWidth: '72px',
-          width: '72px',
-          maxHeight: '200px',
-          overflowY: 'scroll',
-          overflowX: 'hidden',
-        }}
-        alignRight="true"
-      >
-        {scoreArray.map((i) => (
-          <Dropdown.Item as="button" eventKey={i} key={`${player.name}-${i}`}>
-            {i}
-          </Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
+const PlayerButton = (props) => {
+  const {
+    player,
+    size,
+    playerStates,
+    setPlayerStateAt,
+  } = props;
+  const [show, setShow] = useState(false);
+  const playerState = playerStates.get(player.id);
+
+  const setPlayerState = (state) => setPlayerStateAt(player.id, state);
+  const handleSave = () => {
+    setPlayerState({
+      ...playerState,
+      selected: true,
+    });
+    setShow(false);
+  };
+
+  return (
+    <>
+      <NameButton
+        name={player.name}
+        size={size}
+        selected={playerState.selected}
+        handleClick={() => setShow(true)}
+      />
+      <ScoreView
+        name={player.name}
+        playerState={playerState}
+        setPlayerState={setPlayerState}
+        show={show}
+        handleClose={() => setShow(false)}
+        handleSave={handleSave}
+      />
+    </>
   );
 };
 PlayerButton.propTypes = {
@@ -61,6 +80,7 @@ PlayerButton.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
+  size: PropTypes.string.isRequired,
   playerStates: PropTypes.instanceOf(Map).isRequired,
   setPlayerStateAt: PropTypes.func.isRequired,
 };
