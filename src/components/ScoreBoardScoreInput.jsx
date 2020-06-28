@@ -13,7 +13,11 @@ const ScoreInput = (props) => {
       <InputGroup.Prepend>
         <InputGroup.Text>직접입력</InputGroup.Text>
       </InputGroup.Prepend>
-      <FormControl value={thisRoundScore} onChange={(e) => handleChange(e)} />
+      <FormControl 
+        type="number"
+        placeholder={thisRoundScore}
+        onChange={(e) => handleChange(e)} 
+      />
     </InputGroup>
   );
 };

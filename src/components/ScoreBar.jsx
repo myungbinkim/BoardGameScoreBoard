@@ -22,12 +22,12 @@ const ScoreBar = (props) => {
   }
   return (
     <ProgressBar
-      animated
       className="mb-3 mt-3"
       variant={progress}
-      now={now}
       label={`${totalScore}`}
+      now={now}
       block="true"
+      animated
     />
   );
 };

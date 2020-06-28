@@ -30,7 +30,6 @@ const Team = (props) => {
   const { id, members } = team;
   const teamKey = `team-${id}`;
   const totalScore = getTotalScore(members, playerStates);
-  const buttonSize = maxScore > 77 ? '' : 'lg';
 
   return (
     <Container className="border mt-3 mb-3">
@@ -45,7 +44,6 @@ const Team = (props) => {
           >
             <PlayerButton
               player={member}
-              size={buttonSize}
               playerStates={playerStates}
               setPlayerStateAt={setPlayerStateAt}
             />

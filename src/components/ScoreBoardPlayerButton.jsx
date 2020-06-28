@@ -11,7 +11,6 @@ import ScoreView from './ScoreBoardScoreView';
 const NameButton = (props) => {
   const {
     name,
-    size,
     selected,
     handleClick,
   } = props;
@@ -22,7 +21,6 @@ const NameButton = (props) => {
     <Button
       variant={color}
       className="mr-2"
-      size={size}
       onClick={handleClick}
       block
     >
@@ -32,7 +30,6 @@ const NameButton = (props) => {
 };
 NameButton.propTypes = {
   name: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
   handleClick: PropTypes.func.isRequired,
 };
@@ -40,7 +37,6 @@ NameButton.propTypes = {
 const PlayerButton = (props) => {
   const {
     player,
-    size,
     playerStates,
     setPlayerStateAt,
   } = props;
@@ -60,7 +56,6 @@ const PlayerButton = (props) => {
     <>
       <NameButton
         name={player.name}
-        size={size}
         selected={playerState.selected}
         handleClick={() => setShow(true)}
       />
@@ -80,7 +75,6 @@ PlayerButton.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
-  size: PropTypes.string.isRequired,
   playerStates: PropTypes.instanceOf(Map).isRequired,
   setPlayerStateAt: PropTypes.func.isRequired,
 };

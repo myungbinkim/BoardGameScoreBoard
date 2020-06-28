@@ -13,7 +13,10 @@ const ScoreBoard = () => {
   const [round, setRound] = useState(1);
 
   return (
-    <Container style={{ paddingLeft: 0, paddingRight: 0}} fluid>
+    <Container
+      style={{ paddingLeft: 0, paddingRight: 0 }}
+      fluid="true"
+    >
       <Header round={round} />
       <ScoreBoardBody round={round} setRound={setRound} />
     </Container>

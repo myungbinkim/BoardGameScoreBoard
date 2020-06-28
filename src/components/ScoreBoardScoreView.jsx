@@ -46,6 +46,11 @@ const ScoreView = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="text-center">
+        <p className="text-muted mb-0">
+          <small>
+            Total Score
+          </small>
+        </p>
         <h2 className="mb-3 font-weight-bold">
           {totalScore}
         </h2>
