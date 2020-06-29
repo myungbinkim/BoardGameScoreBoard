@@ -1,8 +1,7 @@
 import fs from 'fs';
-import path, { resolve } from 'path';
+import path from 'path';
 import { User, UserDoc } from 'user';
 import { GameResult, Rank } from 'score';
-import { number } from 'prop-types';
 
 function readFile(filePath: string, callback: (data: string) => any) {
   return new Promise((resolve, rejects) => {
@@ -16,7 +15,7 @@ class DB {
 
   static gameResultPath = path.join(__dirname, '../../data/games');
 
-  getResultFilePath = (month: string) => path.join(DB.gameResultPath, month + '.json');
+  getResultFilePath = (month: string) => path.join(DB.gameResultPath, `${month}.json`);
 
   getUser = (id?: number) => readFile(DB.userPath, (data: string) => {
     const obj = JSON.parse(data) as UserDoc;
@@ -31,11 +30,13 @@ class DB {
     return target;
   });
 
-  getAllGameResult = (month: string, team?: string) => readFile(this.getResultFilePath(month), (data: string) => {
-    const obj = JSON.parse(data) as { gameResults: Array<GameResult>; };
-    const result = team ? obj.gameResults : obj.gameResults.filter((elem) => elem.team === team);
-    return result
-  });
+  getAllGameResult = (month: string, team?: string) => readFile(
+    this.getResultFilePath(month), (data: string) => {
+      const obj = JSON.parse(data) as { gameResults: Array<GameResult>; };
+      const result = team ? obj.gameResults : obj.gameResults.filter((elem) => elem.team === team);
+      return result;
+    },
+  );
 
   getRank = async (month: string, team: string) => {
     const users = await this.getUser() as Array<User>;
@@ -48,7 +49,7 @@ class DB {
         game.scores.forEach((score) => {
           // id는 1 베이스
           rank[score.id - 1].score += score.score;
-        })
+        });
       });
       return rank;
     });

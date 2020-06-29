@@ -1,6 +1,5 @@
 import request from 'supertest';
 import app from '../app';
-import { User } from 'user';
 
 describe('API user Test', () => {
   it('get some user', async () => {

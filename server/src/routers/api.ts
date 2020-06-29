@@ -24,7 +24,7 @@ async function getGroup(req: Request, res: Response) {
 
 async function getRank(req: Request, res: Response) {
   try {
-    const teamType = req.query.team as string;
+    // const teamType = req.query.team as string;
     const thisMonth = '202006';
     const rank = await db.getRank(thisMonth, 'single');
     console.log(rank);
