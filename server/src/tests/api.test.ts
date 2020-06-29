@@ -1,20 +1,21 @@
 import request from 'supertest';
 import app from '../app';
+import { User } from 'user';
 
 describe('API user Test', () => {
-  it('get all user', async () => {
-    const res = await request(app).get('/api/user');
-    expect(res.status).toEqual(200);
-    expect(res.body).toBeTruthy();
-  });
   it('get some user', async () => {
-    const res = await request(app).get('/api/user/1');
-    expect(res.status).toEqual(200);
-    expect(res.body).toHaveProperty('name');
+    const idRequestResult = await request(app).get('/api/user/1');
+    expect(idRequestResult.status).toEqual(200);
+    const someUser = idRequestResult.body;
+    expect(someUser).toHaveProperty('name');
+    const allRequestResult = await request(app).get('/api/user');
+    expect(allRequestResult.status).toEqual(200);
+    const allUser = allRequestResult.body;
+    expect(allUser).toContainEqual(someUser);
   });
 });
 
-describe('API user Test', () => {
+describe('API group Test', () => {
   it('get group', async () => {
     const res = await request(app).get('/api/group/DB1-4');
     expect(res.status).toEqual(200);
@@ -24,7 +25,7 @@ describe('API user Test', () => {
 
 describe('API rank Test', () => {
   it('get rank', async () => {
-    const res = await request(app).get('/api/rank?team=single&last_days=30');
+    const res = await request(app).get('/api/rank?team=single');
     expect(res.status).toEqual(200);
     expect(res.body).toHaveProperty('length');
     // expect(res.body).toContain()

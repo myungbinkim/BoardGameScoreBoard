@@ -16,6 +16,22 @@
 }
 
 {
+    "url" : "/api/rank?team={single}"
+    "_comment" : "모든 team (single, duo, trio) 조합의 이번달 기록",
+    "res" : [
+        {"team" : ["주현"], "score" : 67, "ranking" : 1},
+        {"team" : ["숭"], "score" : 32, "ranking" : 2},
+        {"team" : ["성우"], "score" : 15, "ranking" : 3},
+        {"team" : ["상현"], "score" : 11, "ranking" : 4},
+        {"team" : ["명빈"], "score" : 2, "ranking" : 5},
+        {"team" : ["주현"], "score" : 32, "ranking" : 1},
+        {"team" : ["상현"], "score" : 22, "ranking" : 2},
+        {"team" : ["명빈"], "score" : 15, "ranking" : 3},
+        {"team" : ["성우"], "score" : 10, "ranking" : 4},
+        {"team" : ["숭"], "score" : 0, "ranking" : 5},
+    ]
+}
+{
     "url" : "/api/rank?team={single}&last_days={30}",
     "_comment" : "모든 team (single, duo, trio) 조합의 최근 N일간의 기록 (점수, 승/패)",
     "res" : [
@@ -39,6 +55,7 @@
         "Content-Type": "application/json;charset=utf-8"
     },
     "body" : {
+        "team": "duo",
         "result" : [
             { "id": 0, "team": 0, "score": 67 },
             { "id": 1, "team": 4, "score": 33 },
