@@ -56,7 +56,7 @@
     },
     "body" : {
         "team": "duo",
-        "result" : [
+        "scores" : [
             { "id": 0, "team": 0, "score": 67 },
             { "id": 1, "team": 4, "score": 33 },
             { "id": 2, "team": 3, "score": 0 },

@@ -51,8 +51,17 @@ class DB {
           rank[score.id - 1].score += score.score;
         });
       });
+      rank.sort((a, b) => b.score - a.score);
       return rank;
     });
+  };
+
+  insertGameResult = (result: GameResult) => {
+    /* eslint-disable no-console */
+    console.log(result);
+    /* eslint-enable no-console */
+    // TODO impl
+    return new Promise((resolve) => resolve());
   };
 
   /*

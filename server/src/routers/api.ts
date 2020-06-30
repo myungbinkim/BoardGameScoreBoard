@@ -1,47 +1,34 @@
 import express, { Response, Request, NextFunction } from 'express';
-import { User } from 'user';
+import { GameResult } from 'score';
 import db from '../models/db';
 
 /* eslint-disable no-console */
-async function getUser(req: Request, res: Response) {
-  try {
-    const id = Number(req.params.id);
-    const user = await db.getUser(id) as User | Array<User>;
-    res.send(user);
-  } catch (e) {
-    res.status(404).send('something fail');
-  }
-}
-async function getGroup(req: Request, res: Response) {
-  try {
-    const { id } = req.params;
-    const user = await db.getGroup(id) as Array<User>;
-    res.send(user);
-  } catch (e) {
-    res.status(404).send('something fail');
-  }
+function getApiWrapper(fn: (req: Request) => Promise<any>) {
+  return (req: Request, res: Response) => {
+    fn(req).then((data) => res.send(data)).catch((e) => {
+      console.log(e);
+      res.status(404).send('something fail');
+    });
+  };
 }
 
-async function getRank(req: Request, res: Response) {
-  try {
-    // const teamType = req.query.team as string;
-    const thisMonth = '202006';
-    const rank = await db.getRank(thisMonth, 'single');
-    console.log(rank);
-    res.send(rank);
-  } catch (e) {
-    console.log(e);
-    res.status(404).send('something fail');
-  }
+function setApiWrapper(fn: (req: Request) => Promise<any>) {
+  return (req: Request, res: Response) => {
+    fn(req).then(() => res.status(201).end()).catch((e) => {
+      console.log(e);
+      res.status(404).send('something fail');
+    });
+  };
 }
 
-function insertScore(req: Request, res: Response) {
-  try {
-    res.status(201).end();
-  } catch (e) {
-    res.status(404).send('something fail');
-  }
-}
+const getUser = getApiWrapper((req) => db.getUser(Number(req.params.id)));
+const getGroup = getApiWrapper((req) => db.getGroup(req.params.id));
+const getRank = getApiWrapper(() => db.getRank('202006', 'single'));
+
+const insertGameResult = setApiWrapper((req) => {
+  const result: GameResult = { date: 20200630, team: req.body.team, scores: req.body.scores };
+  return db.insertGameResult(result);
+});
 
 const apiRouter = express.Router();
 
@@ -55,7 +42,7 @@ apiRouter.get('/user', getUser);
 apiRouter.get('/user/:id', getUser);
 apiRouter.get('/group/:id', getGroup);
 apiRouter.get('/rank', getRank);
-apiRouter.post('/scores', insertScore);
+apiRouter.post('/scores', insertGameResult);
 
 apiRouter.get('*', (req: Request, res: Response) => {
   res.status(404).send('invalid path');
