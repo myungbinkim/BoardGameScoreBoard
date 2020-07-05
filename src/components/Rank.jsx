@@ -1,47 +1,41 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Table from 'react-bootstrap/Table';
+
+import ExpandableTable from './ExpandableTable';
 
 const useRank = () => {
-  const players = ['heejung', 'myungbin', 'jongchan', 'juhyun', 'woojin', 'jooho', 'sanghyun', 'sungwoo', 'soong', 'taeyun'];
-  const [form, setForm] = useState(1);
-  const toMatrix = (arr, width) => arr.reduce(
-    (rows, key, index) => (index % width === 0 ? rows.push({ team: [key], score: 100 })
-      : rows[rows.length - 1].team.push(key)) && rows, [],
-  );
+  const [form, setForm] = useState('TOP');
+  let getRank = () => { };
 
-  const rank = toMatrix(players, form);
+  if (form === 'TOP') {
+    getRank = () => {
+      const players = ['heejung', 'myungbin', 'jongchan', 'juhyun', 'woojin', 'jooho', 'sanghyun', 'sungwoo', 'soong', 'taeyun'];
+      return players.reduce(
+        (rows, key) => (rows.push({ player: key, score: 100 })) && rows, [],
+      );
+    };
+  } else {
+    getRank = () => {
+      const players = ['heejung', 'myungbin', 'jongchan', 'juhyun', 'woojin', 'jooho', 'sanghyun', 'sungwoo', 'soong', 'taeyun'];
+      return players.reduce(
+        (rows, key) => (rows.push({ player: key, score: 10 })) && rows, [],
+      );
+    };
+  }
 
-  return [rank, setForm];
+  return [getRank(), form, setForm];
 };
 
 const Rank = () => {
-  const [rank, setRank] = useRank();
+  const [rank, form, setRank] = useRank();
   return (
     <div>
       <ButtonGroup className="my-3 w-100">
-        <Button variant="outline-dark" className="w-100" onClick={() => setRank(1)}>Top Score</Button>
-        <Button variant="outline-dark" className="w-100" onClick={() => setRank(2)}>Avg Score</Button>
+        <Button variant="outline-dark" className="w-100" onClick={() => setRank('TOP')}>Top Score</Button>
+        <Button variant="outline-dark" className="w-100" onClick={() => setRank('AVG')}>Avg Score</Button>
       </ButtonGroup>
-      <Table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>PLAYER</th>
-            <th>SCORE</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rank.map((row, index) => (
-            <tr key={row.team}>
-              <td>{index + 1}</td>
-              <td>{row.team.join(', ')}</td>
-              <td>{row.score}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <ExpandableTable key={form} header={['#', 'PLAYER', 'SCORE']} rows={rank} />
     </div>
   );
 };
