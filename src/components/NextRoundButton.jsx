@@ -37,13 +37,13 @@ const checkAllSelected = (playerStates) => {
   return stateArray.reduce((acc, cur) => acc && cur.selected);
 };
 
-const getFinalScores = (playerStates) => {
-  const finalScores = [];
+const getThisRoundScores = (playerStates) => {
+  const thisRoundScores = [];
   playerStates.forEach((state, id) => {
-    const score = state.currentScore;
-    finalScores.push({ id, score });
+    const score = state.currentScore - state.prevScore;
+    thisRoundScores.push({ id, score });
   });
-  return finalScores;
+  return thisRoundScores;
 };
 
 const NextRoundButton = (props) => {
@@ -68,7 +68,7 @@ const NextRoundButton = (props) => {
         <Button
           variant="danger"
           size="lg"
-          onClick={() => dispatch(setScores(getFinalScores(playerStates)))}
+          onClick={() => dispatch(setScores(getThisRoundScores(playerStates)))}
           block
         >
           Game Over
@@ -82,6 +82,7 @@ const NextRoundButton = (props) => {
       variant="info"
       size="lg"
       onClick={() => {
+        dispatch(setScores(getThisRoundScores(playerStates)));
         updateAllStates();
         setRound(nextRound);
       }}

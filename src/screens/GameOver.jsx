@@ -23,7 +23,7 @@ const GameOver = () => {
       let total = acc;
       players.forEach((entry) => {
         if (entry.id === m.id) {
-          total += entry.score;
+          total += entry.score.reduce((a, c) => a + c);
         }
       });
       return total;

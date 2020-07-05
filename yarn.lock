@@ -4924,6 +4924,14 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-bootstrap-range-slider@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-range-slider/-/react-bootstrap-range-slider-1.0.0.tgz#169a5ef4dd883f0986a81f7b76c954abbfb710a1"
+  integrity sha512-qvDbr6koQYBVo0skpLdxxwUGlcE0MHKrpF9T3SPHnOyk3H80Uv2yR1O9iR8ichpMVphJxALeWmzzfY3AVJPKhA==
+  dependencies:
+    classnames "^2.2.6"
+    prop-types "^15.7.2"
+
 react-bootstrap@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-1.0.1.tgz#044b51f34a9db8e17dbfb321a71267a8d6ad11b4"

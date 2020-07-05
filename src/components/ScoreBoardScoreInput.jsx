@@ -3,27 +3,91 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* react-bootstrap */
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import RangeSlider from 'react-bootstrap-range-slider';
+
+const PlusMinus = (props) => {
+  const { thisRoundScore, setThisRoundScore } = props;
+  const handlePlusMinus = (value) => {
+    const newScore = thisRoundScore + value > -1 ? thisRoundScore + value : 0;
+    setThisRoundScore(newScore);
+  };
+
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <Button
+            className="ml-auto mr-auto"
+            variant="outline-info"
+            onClick={() => handlePlusMinus(-1)}
+            block
+          >
+            -
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            className="ml-auto mr-auto"
+            variant="outline-info"
+            onClick={() => handlePlusMinus(1)}
+            block
+          >
+            +
+          </Button>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+PlusMinus.propTypes = {
+  thisRoundScore: PropTypes.number.isRequired,
+  setThisRoundScore: PropTypes.func.isRequired,
+};
+
+const Slider = (props) => {
+  const { thisRoundScore, setThisRoundScore } = props;
+
+  const handleChange = (e) => {
+    const value = Number(e.target.value);
+    if (Number.isInteger(value)) {
+      setThisRoundScore(value);
+    }
+  };
+
+  return (
+    <RangeSlider
+      value={thisRoundScore}
+      size="lg"
+      variant="info"
+      step="5"
+      tooltip="off"
+      block
+      onChange={(e) => handleChange(e)}
+    />
+  );
+};
+Slider.propTypes = {
+  thisRoundScore: PropTypes.number.isRequired,
+  setThisRoundScore: PropTypes.func.isRequired,
+};
 
 const ScoreInput = (props) => {
-  const { thisRoundScore, handleChange } = props;
+  const { thisRoundScore, setThisRoundScore } = props;
+
   return (
-    <InputGroup>
-      <InputGroup.Prepend>
-        <InputGroup.Text>직접입력</InputGroup.Text>
-      </InputGroup.Prepend>
-      <FormControl 
-        type="number"
-        placeholder={thisRoundScore}
-        onChange={(e) => handleChange(e)} 
-      />
-    </InputGroup>
+    <>
+      <Slider thisRoundScore={thisRoundScore} setThisRoundScore={setThisRoundScore} />
+      <PlusMinus thisRoundScore={thisRoundScore} setThisRoundScore={setThisRoundScore} />
+    </>
   );
 };
 ScoreInput.propTypes = {
   thisRoundScore: PropTypes.number.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  setThisRoundScore: PropTypes.func.isRequired,
 };
 
 export default ScoreInput;

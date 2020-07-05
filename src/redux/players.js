@@ -4,7 +4,7 @@ const SET_SCORES = 'SET_SCORES';
 const RESET_SCORES = 'RESET_SCORES';
 
 const initialState = {
-  /* format: { id: number, name: string, score: number } */
+  /* format: { id: number, name: string, arrayOf(score: number) } */
   playerList: [],
   /* format: { id: number, members: arrayOf({ id: number, name: string }) } */
   teamList: [],
@@ -48,10 +48,20 @@ const players = (state = initialState, action) => {
     case SET_SCORES: {
       const scores = action.payload;
       const playerList = state.playerList.map((player) => {
-        const finalScore = scores.find((entry) => entry.id === player.id).score;
+        const found = scores.find((entry) => entry.id === player.id).score;
+
+        if (!Object.prototype.hasOwnProperty.call(player, 'score')) {
+          return {
+            ...player,
+            score: [found],
+          };
+        }
+
+        const newScore = Array.from(player.score);
+        newScore.push(found);
         return {
           ...player,
-          score: finalScore,
+          score: newScore,
         };
       });
       return {

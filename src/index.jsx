@@ -6,6 +6,7 @@ import store from './redux/store';
 
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 ReactDOM.render(
   <Provider store={store}>

@@ -1,5 +1,5 @@
 /* react */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* react-bootstrap */
@@ -7,31 +7,18 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 /* component */
-import ScoreToolbar from './ScoreBoardScoreToolbar';
 import ScoreInput from './ScoreBoardScoreInput';
 
 const ScoreView = (props) => {
   const {
     name,
     playerState,
-    setPlayerState,
     show,
     handleClose,
     handleSave,
   } = props;
 
-  const totalScore = playerState.currentScore;
-  const thisRoundScore = playerState.currentScore - playerState.prevScore;
-  const handleChange = (e) => {
-    const value = Number(e.target.value);
-    if (Number.isInteger(value)) {
-      const newScore = playerState.prevScore + value;
-      setPlayerState({
-        ...playerState,
-        currentScore: newScore,
-      });
-    }
-  };
+  const [thisRoundScore, setThisRoundScore] = useState(playerState.prevScore);
 
   return (
     <Modal
@@ -45,23 +32,26 @@ const ScoreView = (props) => {
           {name}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className="text-center">
-        <p className="text-muted mb-0">
+      <Modal.Body>
+        <p className="text-muted mb-0 text-center">
           <small>
-            Total Score
+            이번 라운드 점수
           </small>
         </p>
-        <h2 className="mb-3 font-weight-bold">
-          {totalScore}
+        <h2 className="mb-3 font-weight-bold text-center">
+          {thisRoundScore}
         </h2>
-        <ScoreToolbar playerState={playerState} setPlayerState={setPlayerState} />
-        <ScoreInput thisRoundScore={thisRoundScore} handleChange={handleChange} />
+
+        <ScoreInput
+          thisRoundScore={thisRoundScore}
+          setThisRoundScore={setThisRoundScore}
+        />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleSave}>
+        <Button variant="primary" onClick={() => handleSave(thisRoundScore)}>
           저장
         </Button>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={() => handleClose()}>
           닫기
         </Button>
       </Modal.Footer>
@@ -75,7 +65,6 @@ ScoreView.propTypes = {
     prevScore: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
   }).isRequired,
-  setPlayerState: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
