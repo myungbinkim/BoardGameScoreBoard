@@ -1,16 +1,14 @@
 import * as React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link } from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
 
 export default function Header() {
   return (
     <Navbar fixed="top" bg="primary" variant="dark">
-      <Navbar.Brand> Boardgame Scoreboard </Navbar.Brand>
-      <Navbar.Collapse className="justify-content-end">
-        <Link to="/">
-          HOME
-        </Link>
-      </Navbar.Collapse>
+      <Navbar.Brand href="/"> 6NIMMT </Navbar.Brand>
+      <Nav className="mr-auto">
+        <Nav.Link href="/rank">Statistics</Nav.Link>
+      </Nav>
     </Navbar>
   );
 }

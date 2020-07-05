@@ -21,9 +21,8 @@ const Rank = () => {
   return (
     <div>
       <ButtonGroup className="my-3 w-100">
-        <Button variant="outline-dark" className="w-100" onClick={() => setRank(1)}>Single</Button>
-        <Button variant="outline-dark" className="w-100" onClick={() => setRank(2)}>Duo</Button>
-        <Button variant="outline-dark" className="w-100" onClick={() => setRank(3)}>Trio</Button>
+        <Button variant="outline-dark" className="w-100" onClick={() => setRank(1)}>Top Score</Button>
+        <Button variant="outline-dark" className="w-100" onClick={() => setRank(2)}>Avg Score</Button>
       </ButtonGroup>
       <Table>
         <thead>

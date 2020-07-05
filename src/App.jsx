@@ -6,12 +6,10 @@ import Home from './screens/Home';
 import Participatant from './screens/Participatant';
 import TeamMatching from './screens/TeamMatching';
 import ScoreBoard from './screens/ScoreBoard';
-import Rank from './screens/Rank';
+import Statistics from './screens/Statistics';
 import GameOver from './screens/GameOver';
 
 import Header from './components/Header';
-import Footer from './components/Footer';
-
 
 export default function App() {
   return (
@@ -31,15 +29,14 @@ export default function App() {
           <Route path="/score-board">
             <ScoreBoard />
           </Route>
-          <Route path="/rank">
-            <Rank />
+          <Route path="/statistics">
+            <Statistics />
           </Route>
           <Route path="/game-over">
             <GameOver />
           </Route>
         </Switch>
       </Container>
-      <Footer />
     </BrowserRouter>
   );
 }
