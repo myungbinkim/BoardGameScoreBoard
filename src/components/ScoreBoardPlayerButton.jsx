@@ -45,9 +45,10 @@ const PlayerButton = (props) => {
 
   const setPlayerState = (state) => setPlayerStateAt(player.id, state);
   const handleSave = (score) => {
+    const newScore = playerState.prevScore + score;
     setPlayerState({
       ...playerState,
-      currentScore: score,
+      currentScore: newScore,
       selected: true,
     });
     setShow(false);
