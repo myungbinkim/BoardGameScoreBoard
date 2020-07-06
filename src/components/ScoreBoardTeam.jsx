@@ -11,15 +11,6 @@ import Col from 'react-bootstrap/Col';
 import PlayerButton from './ScoreBoardPlayerButton';
 import ScoreBar from './ScoreBar';
 
-const getTotalScore = (members, playerStates) => {
-  let totalScore = 0;
-  members.forEach((member) => {
-    const score = playerStates.get(member.id).currentScore;
-    totalScore += score;
-  });
-  return totalScore;
-};
-
 const Team = (props) => {
   const {
     team,
@@ -29,7 +20,6 @@ const Team = (props) => {
   } = props;
   const { id, members } = team;
   const teamKey = `team-${id}`;
-  const totalScore = getTotalScore(members, playerStates);
 
   return (
     <Container className="border mt-3 mb-3">
@@ -50,7 +40,7 @@ const Team = (props) => {
           </Col>
         ))}
       </Row>
-      <ScoreBar totalScore={totalScore} maxScore={maxScore} />
+      <ScoreBar members={members} playerStates={playerStates} maxScore={maxScore} />
     </Container>
   );
 };

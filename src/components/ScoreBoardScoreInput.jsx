@@ -63,7 +63,7 @@ const Slider = (props) => {
       value={thisRoundScore}
       size="lg"
       variant="info"
-      step="5"
+      step={5}
       tooltip="off"
       block
       onChange={(e) => handleChange(e)}
