@@ -60,7 +60,7 @@ function TeamView(props) {
   const { id, players } = props;
   const [isFlipped, setFlipped] = useState(false);
   const front = true;
-  const onClick = () => { setFlipped(!isFlipped); };
+  const onClick = () => { setFlipped(true); };
   return (
     <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
       <TeamCard id={id} players={players} onClick={onClick} front={front} />
@@ -83,15 +83,15 @@ export default function TeamMatching() {
   let teamList = useSelector((state) => state.players.teamList);
   const dispatch = useDispatch();
 
-  if (teamList.length === 0) {
-    teamList = makeTeamList(ArrayShuffle(players), playersPerTeam);
-  }
+  teamList = makeTeamList(ArrayShuffle(players), playersPerTeam);
 
-  useEffect(() => () => { dispatch(setTeams(teamList)); });
+  useEffect(() => () => {
+    dispatch(setTeams(teamList));
+  });
 
   return (
     <div>
-      <Container className="row">
+      <Container>
         {teamList.map((team) => (
           <TeamView id={team.id} players={team.members} key={team.id} />
         ))}
