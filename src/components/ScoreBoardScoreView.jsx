@@ -26,6 +26,7 @@ const ScoreView = (props) => {
 
   return (
     <Modal
+      animation={false}
       show={show}
       onHide={handleClose}
       backdrop="static"

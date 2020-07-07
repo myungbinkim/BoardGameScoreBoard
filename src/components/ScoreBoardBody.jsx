@@ -55,18 +55,21 @@ const ScoreBoardBody = (props) => {
   ] = usePlayerStates(playerList, initialState);
 
   return (
-    <Container>
-      {
-        teamList.map((team) => (
-          <Team
-            key={team.id}
-            team={team}
-            playerStates={playerStates}
-            setPlayerStateAt={setPlayerStateAt}
-            maxScore={maxScore}
-          />
-        ))
-      }
+    <>
+      <Container className="overflow-auto mb-3" style={{ maxHeight: '70vh' }}>
+        {
+          teamList.map((team) => (
+            <Team
+              key={team.id}
+              team={team}
+              playerStates={playerStates}
+              setPlayerStateAt={setPlayerStateAt}
+              maxScore={maxScore}
+            />
+          ))
+        }
+
+      </Container>
       <NextRoundButton
         teamList={teamList}
         playerStates={playerStates}
@@ -75,7 +78,7 @@ const ScoreBoardBody = (props) => {
         round={round}
         setRound={setRound}
       />
-    </Container>
+    </>
   );
 };
 

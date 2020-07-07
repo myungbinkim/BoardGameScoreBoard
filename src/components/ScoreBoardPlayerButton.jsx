@@ -57,7 +57,7 @@ const PlayerButton = (props) => {
   return (
     <>
       <NameButton
-        name={player.name}
+        name={`${player.name}(${playerState.currentScore})`}
         selected={playerState.selected}
         handleClick={() => setShow(true)}
       />

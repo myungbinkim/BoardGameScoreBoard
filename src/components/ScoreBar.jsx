@@ -4,11 +4,6 @@ import PropTypes from 'prop-types';
 
 /* react-bootstrap */
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Popover from 'react-bootstrap/Popover';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 const getTotalScore = (members, playerStates) => {
   let totalScore = 0;
@@ -24,33 +19,6 @@ const ScoreBar = (props) => {
   const totalScore = getTotalScore(members, playerStates);
   const percentage = Number((totalScore / maxScore) * 100);
   const now = percentage <= 100 ? percentage : 100;
-  const popover = () => (
-    <Popover>
-      <Popover.Title as="h3">
-        선수 개인 기록
-      </Popover.Title>
-      <Popover.Content>
-        <Container>
-          <Row>
-            {members.map((member) => {
-              const { name } = member;
-              const score = playerStates.get(member.id).currentScore;
-              return (
-                <Col key={`player-stat-${name}`}>
-                  <p>
-                    {`이름: ${name}`}
-                  </p>
-                  <p>
-                    {`점수: ${score}`}
-                  </p>
-                </Col>
-              );
-            })}
-          </Row>
-        </Container>
-      </Popover.Content>
-    </Popover>
-  );
   let progress = '';
 
   if (percentage >= 0 && percentage <= 50) {
@@ -63,20 +31,14 @@ const ScoreBar = (props) => {
     progress = 'dark';
   }
   return (
-    <OverlayTrigger
-      trigger="click"
-      placement="bottom"
-      overlay={popover}
-    >
-      <ProgressBar
-        className="mb-3 mt-3"
-        variant={progress}
-        label={`${totalScore}`}
-        now={now}
-        block="true"
-        animated
-      />
-    </OverlayTrigger>
+    <ProgressBar
+      className="mb-3 mt-3"
+      variant={progress}
+      label={`${totalScore}`}
+      now={now}
+      block="true"
+      animated
+    />
   );
 };
 
