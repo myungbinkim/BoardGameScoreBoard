@@ -8,6 +8,8 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import RangeSlider from 'react-bootstrap-range-slider';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 const PlusMinus = (props) => {
   const { thisRoundScore, setThisRoundScore } = props;
@@ -17,7 +19,7 @@ const PlusMinus = (props) => {
   };
 
   return (
-    <Container>
+    <Container className="mb-3">
       <Row>
         <Col>
           <Button
@@ -75,6 +77,32 @@ Slider.propTypes = {
   setThisRoundScore: PropTypes.func.isRequired,
 };
 
+const InputByHand = (props) => {
+  const { setThisRoundScore } = props;
+
+  const handleChange = (e) => {
+    const value = Number(e.target.value);
+    if (Number.isInteger(value)) {
+      setThisRoundScore(value);
+    }
+  };
+
+  return (
+    <InputGroup className="mt-3">
+      <InputGroup.Prepend>
+        <InputGroup.Text>직접입력</InputGroup.Text>
+      </InputGroup.Prepend>
+      <FormControl
+        type="number"
+        onChange={(e) => handleChange(e)}
+      />
+    </InputGroup>
+  );
+};
+InputByHand.propTypes = {
+  setThisRoundScore: PropTypes.func.isRequired,
+};
+
 const ScoreInput = (props) => {
   const { thisRoundScore, setThisRoundScore } = props;
 
@@ -82,6 +110,7 @@ const ScoreInput = (props) => {
     <>
       <Slider thisRoundScore={thisRoundScore} setThisRoundScore={setThisRoundScore} />
       <PlusMinus thisRoundScore={thisRoundScore} setThisRoundScore={setThisRoundScore} />
+      <InputByHand thisRoundScore={thisRoundScore} setThisRoundScore={setThisRoundScore} />
     </>
   );
 };

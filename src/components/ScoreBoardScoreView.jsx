@@ -19,6 +19,10 @@ const ScoreView = (props) => {
   } = props;
 
   const [thisRoundScore, setThisRoundScore] = useState(playerState.prevScore);
+  const onClickSave = () => {
+    handleSave(thisRoundScore);
+    setThisRoundScore(0);
+  };
 
   return (
     <Modal
@@ -48,7 +52,7 @@ const ScoreView = (props) => {
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={() => handleSave(thisRoundScore)}>
+        <Button variant="primary" onClick={onClickSave}>
           저장
         </Button>
         <Button variant="secondary" onClick={() => handleClose()}>
