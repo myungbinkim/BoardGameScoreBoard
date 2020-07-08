@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Toast from 'react-bootstrap/Toast';
+import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import { selectPart } from '../redux/participatants';
 
 const Participatant = ({ part }) => {
   const dispatch = useDispatch();
+  const [color, setColor] = useState(true);
   return (
-    <Toast show={part.selected} onClose={() => dispatch(selectPart(part.id))}>
-      <Toast.Header>
-        <strong className="mr-auto">{part.name}</strong>
-      </Toast.Header>
-      <Toast.Body>승:0 / 패:0</Toast.Body>
-    </Toast>
+    <>
+      <Button
+        style={{
+          height: '80px',
+          textAlign: 'center',
+        }}
+        variant={color ? 'primary' : 'secondary'}
+        block
+        onClick={() => {
+          dispatch(selectPart(part.id));
+          setColor(!color);
+        }}
+      >
+        {part.name}
+      </Button>
+      {' '}
+    </>
   );
 };
 
