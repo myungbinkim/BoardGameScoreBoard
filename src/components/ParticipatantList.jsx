@@ -79,61 +79,87 @@ const PartList = () => {
       { (check1 || check2 || check3)
         && (
         <Jumbotron>
-          <Row>
+          <Row
+            style={{
+              height: '90px',
+            }}
+          >
             {partInfo.filter((part) => part.id < 3).map((part) => (
               <Col>
                 <Participatant key={part.id} part={part} />
               </Col>
             ))}
           </Row>
-          <Row>
+          <Row
+            style={{
+              height: '90px',
+            }}
+          >
             {partInfo.filter((part) => part.id > 2 && part.id < 5).map((part) => (
               <Col>
                 <Participatant key={part.id} part={part} />
               </Col>
             ))}
           </Row>
-          <Row>
+          <Row
+            style={{
+              height: '90px',
+            }}
+          >
             {partInfo.filter((part) => part.id > 4 && part.id < 7).map((part) => (
               <Col>
                 <Participatant key={part.id} part={part} />
               </Col>
             ))}
           </Row>
-          <Row>
+          <Row
+            style={{
+              height: '90px',
+            }}
+          >
             {partInfo.filter((part) => part.id > 6 && part.id < 9).map((part) => (
               <Col>
                 <Participatant key={part.id} part={part} />
               </Col>
             ))}
           </Row>
-          <Row>
+          <Row
+            style={{
+              height: '90px',
+            }}
+          >
             {partInfo.filter((part) => part.id > 8).map((part) => (
               <Col>
                 <Participatant key={part.id} part={part} />
               </Col>
             ))}
           </Row>
-          <div>
-            {decideNext() && (
-              <Link to="/team-matching">
-                <Button
-                  variant="success"
-                  size="lg"
-                  block
-                  onClick={() => dispatch(
-                    setPlayers(
-                      partInfo
-                        .filter((part) => part.selected === true)
-                        .map((part) => ({ id: part.id, name: part.name })),
-                    ),
-                  )}
-                >
-                  NEXT
-                </Button>
-              </Link>
-            )}
-          </div>
+          <Row
+            style={{
+              height: '50px',
+            }}
+          >
+            <Col>
+              {decideNext() && (
+                <Link to="/team-matching">
+                  <Button
+                    variant="success"
+                    size="lg"
+                    block
+                    onClick={() => dispatch(
+                      setPlayers(
+                        partInfo
+                          .filter((part) => part.selected === true)
+                          .map((part) => ({ id: part.id, name: part.name })),
+                      ),
+                    )}
+                  >
+                    NEXT
+                  </Button>
+                </Link>
+              )}
+            </Col>
+          </Row>
         </Jumbotron>
         )}
     </>
