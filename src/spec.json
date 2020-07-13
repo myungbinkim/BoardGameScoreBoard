@@ -16,35 +16,19 @@
 }
 
 {
-    "url" : "/api/rank?team={single}"
-    "_comment" : "모든 team (single, duo, trio) 조합의 이번달 기록",
+    "url" : "/api/rank?orderby={avg, max}"
+    "_comment" : "개인별 한달간 점수의 avg(max)로 rank를 반환",
     "res" : [
-        {"team" : ["주현"], "score" : 67, "ranking" : 1},
-        {"team" : ["숭"], "score" : 32, "ranking" : 2},
-        {"team" : ["성우"], "score" : 15, "ranking" : 3},
-        {"team" : ["상현"], "score" : 11, "ranking" : 4},
-        {"team" : ["명빈"], "score" : 2, "ranking" : 5},
-        {"team" : ["주현"], "score" : 32, "ranking" : 1},
-        {"team" : ["상현"], "score" : 22, "ranking" : 2},
-        {"team" : ["명빈"], "score" : 15, "ranking" : 3},
-        {"team" : ["성우"], "score" : 10, "ranking" : 4},
-        {"team" : ["숭"], "score" : 0, "ranking" : 5},
-    ]
-}
-{
-    "url" : "/api/rank?team={single}&last_days={30}",
-    "_comment" : "모든 team (single, duo, trio) 조합의 최근 N일간의 기록 (점수, 승/패)",
-    "res" : [
-        {"team" : ["주현"], "score" : 67, "ranking" : 1},
-        {"team" : ["숭"], "score" : 32, "ranking" : 2},
-        {"team" : ["성우"], "score" : 15, "ranking" : 3},
-        {"team" : ["상현"], "score" : 11, "ranking" : 4},
-        {"team" : ["명빈"], "score" : 2, "ranking" : 5},
-        {"team" : ["주현"], "score" : 32, "ranking" : 1},
-        {"team" : ["상현"], "score" : 22, "ranking" : 2},
-        {"team" : ["명빈"], "score" : 15, "ranking" : 3},
-        {"team" : ["성우"], "score" : 10, "ranking" : 4},
-        {"team" : ["숭"], "score" : 0, "ranking" : 5},
+        {"team" : ["남주현"], "score" : 67},
+        {"team" : ["김명빈"], "score" : 61},
+        {"team" : ["김숭"], "score" : 32},
+        {"team" : ["장성우"], "score" : 25},
+        {"team" : ["박상현"], "score" : 21},
+        {"team" : ["김우진"], "score" : 18},
+        {"team" : ["안종찬"], "score" : 15},
+        {"team" : ["이주호"], "score" : 11},
+        {"team" : ["김태윤"], "score" : 5},
+        {"team" : ["양희정"], "score" : 2},
     ]
 }
 
