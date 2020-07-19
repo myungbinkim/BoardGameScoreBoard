@@ -21,7 +21,6 @@ const ScoreView = (props) => {
   const [thisRoundScore, setThisRoundScore] = useState(playerState.prevScore);
   const onClickSave = () => {
     handleSave(thisRoundScore);
-    setThisRoundScore(0);
   };
 
   return (
