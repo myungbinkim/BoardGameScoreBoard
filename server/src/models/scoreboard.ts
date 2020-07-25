@@ -17,7 +17,6 @@ class ScoreBoard {
   write = (teamScores: TeamScores) => {
     fs.writeFile(ScoreBoard.defaultPath, JSON.stringify(teamScores), (err) => {
       if (err) throw err;
-      console.log('The file has been saved!');
     });
     return new Promise((resolve) => resolve());
   }
