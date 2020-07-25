@@ -141,7 +141,7 @@ const PartList = () => {
           >
             <Col>
               {decideNext() && (
-                <Link to="/team-matching">
+                <Link to="/admin/team-matching">
                   <Button
                     variant="success"
                     size="lg"

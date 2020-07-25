@@ -8,8 +8,8 @@ export default function Home() {
   return (
     <div>
       <Rank />
-      <Link to="/scoreboard">
-        <Button variant="success" size="lg" block>SCOREBOARD</Button>
+      <Link to="/admin/participatant">
+        <Button variant="success" size="lg" block>START</Button>
       </Link>
     </div>
   );

@@ -33,19 +33,27 @@ const GameOver = () => {
 
   return (
     <Container>
-      <Link to="/score-board">
+      <Link to="/admin/score-board">
         <Button
           variant="warning"
           onClick={() => {
             dispatch(resetScores());
+            fetch('/api/scoreboard/reopen').then((response) => { window.console.log(response); });
           }}
         >
           REPLAY
         </Button>
         {' '}
       </Link>
-      <Link to="/">
-        <Button variant="danger">HOME</Button>
+      <Link to="/admin">
+        <Button
+          variant="danger"
+          onClick={() => {
+            fetch('/api/scoreboard/close').then((response) => { window.console.log(response); });
+          }}
+        >
+          HOME
+        </Button>
       </Link>
       <Table>
         <thead>

@@ -81,9 +81,21 @@ export default function TeamMatching() {
   const players = useSelector((state) => state.players.playerList);
   const playersPerTeam = useSelector((state) => state.game.playersPerTeam);
   let teamList = useSelector((state) => state.players.teamList);
+  const maxScore = useSelector((state) => state.game.maxScore);
   const dispatch = useDispatch();
 
   teamList = makeTeamList(ArrayShuffle(players), playersPerTeam);
+
+  const OpenUserScoreBoard = () => {
+    console.log('open user ScoreBoard');
+    fetch('/api/scoreboard/open', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify({ teamlist: teamList, maxscore: maxScore }),
+    }).then((response) => { window.console.log(response); });
+  };
 
   useEffect(() => () => {
     dispatch(setTeams(teamList));
@@ -96,8 +108,8 @@ export default function TeamMatching() {
           <TeamView id={team.id} players={team.members} key={team.id} />
         ))}
       </Container>
-      <Link to="/score-board">
-        <Button variant="success" size="lg" block>GAME START</Button>
+      <Link to="/admin/score-board">
+        <Button onClick={OpenUserScoreBoard} variant="success" size="lg" block>GAME START</Button>
       </Link>
     </div>
   );

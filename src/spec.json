@@ -16,7 +16,7 @@
 }
 
 {
-    "url" : "/api/rank?orderby={avg, max}"
+    "url" : "/api/rank?orderby={avg, max}",
     "_comment" : "개인별 한달간 점수의 avg(max)로 rank를 반환",
     "res" : [
         {"team" : ["남주현"], "score" : 67},
@@ -32,6 +32,50 @@
     ]
 }
 
+{
+    "url" : "/api/scoreboard/score?id={playerid}&score={score}",
+    "_comment" : "server의 scoreboard에 player별 점수를 update 한다.",
+    "res" : {
+        "success": true,
+    }
+}
+
+{
+    "url" : "/api/scoreboard/open",
+    "_comment" : "server의 scoreboard 기록을 시작한다.",
+    "body" : {
+        "team": "duo",
+        "scores" : [
+            { "id": 0, "team": 0, "score": [67, 32] },
+            { "id": 1, "team": 4, "score": [33, 16] },
+            { "id": 2, "team": 3, "score": [0, 32] },
+            { "id": 3, "team": 1, "score": [30, 27] },
+            { "id": 4, "team": 2, "score": [15, 16] },
+            { "id": 5, "team": 4, "score": [54, 22] },
+            { "id": 6, "team": 3, "score": [40, 22] },
+            { "id": 7, "team": 0, "score": [32, 1] },
+            { "id": 8, "team": 2, "score": [22, 1] },
+            { "id": 9, "team": 1, "score": [5, 6] },
+        ]
+    },
+    "res" : {
+        "success": true,
+    }
+}
+{
+    "url" : "/api/scoreboard/reopen",
+    "_comment" : "server의 scoreboard 기록 재시작한다.",
+    "res" : {
+        "success": true,
+    }
+}
+{
+    "url" : "/api/scoreboard/close",
+    "_comment" : "server의 scoreboard 기록을 종료한다.",
+    "res" : {
+        "success": true,
+    }
+}
 {
     "url" : "/api/scores",
     "_comment" : "경기 결과. 팀 구성과 점수 기록을 전달. 이름 대신에 아이디로.",

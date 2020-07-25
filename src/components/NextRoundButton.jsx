@@ -64,7 +64,7 @@ const NextRoundButton = (props) => {
 
   if (isAllSelected && isOver) {
     return (
-      <Link to="/game-over">
+      <Link to="/admin/game-over">
         <Button
           variant="danger"
           size="lg"

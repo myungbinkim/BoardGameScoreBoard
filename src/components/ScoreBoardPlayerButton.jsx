@@ -52,6 +52,9 @@ const PlayerButton = (props) => {
       selected: true,
     });
     setShow(false);
+    fetch(`/api/scoreboard/score/${player.id}&${newScore}`).then(
+      (response) => { window.console.log(response); },
+    );
   };
 
   return (
