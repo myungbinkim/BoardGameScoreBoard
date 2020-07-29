@@ -66,8 +66,6 @@ const PlayerButton = (props) => {
       />
       <ScoreView
         name={player.name}
-        playerState={playerState}
-        setPlayerState={setPlayerState}
         show={show}
         handleClose={() => setShow(false)}
         handleSave={handleSave}

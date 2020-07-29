@@ -12,15 +12,15 @@ import ScoreInput from './ScoreBoardScoreInput';
 const ScoreView = (props) => {
   const {
     name,
-    playerState,
     show,
     handleClose,
     handleSave,
   } = props;
 
-  const [thisRoundScore, setThisRoundScore] = useState(playerState.prevScore);
+  const [thisRoundScore, setThisRoundScore] = useState(0);
   const onClickSave = () => {
     handleSave(thisRoundScore);
+    setThisRoundScore(0);
   };
 
   return (
@@ -39,7 +39,7 @@ const ScoreView = (props) => {
       <Modal.Body>
         <p className="text-muted mb-0 text-center">
           <small>
-            이번 라운드 점수
+            입력한 점수
           </small>
         </p>
         <h2 className="mb-3 font-weight-bold text-center">
@@ -64,11 +64,6 @@ const ScoreView = (props) => {
 };
 ScoreView.propTypes = {
   name: PropTypes.string.isRequired,
-  playerState: PropTypes.shape({
-    currentScore: PropTypes.number.isRequired,
-    prevScore: PropTypes.number.isRequired,
-    selected: PropTypes.bool.isRequired,
-  }).isRequired,
   show: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
